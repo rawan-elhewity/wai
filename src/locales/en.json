@@ -1,0 +1,137 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "We Transform Your Ideas Into",
+    "titleHighlight": "Digital Reality",
+    "subtitle": "WAI Soft specializes in software development using the latest AI technologies. We help you build modern websites and applications that achieve your goals.",
+    "cta": "Start Your Project",
+    "viewWork": "View Our Work",
+    "badge": "Building the Future with AI",
+    "scroll": "Discover More"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "We are a team of professionals passionate about technology",
+    "story": "Our Story",
+    "storyText": "WAI Soft started in 2020, when a team of passionate developers decided to create a company that provides innovative technical solutions. We are an Egyptian company that lives on the cutting-edge of technology focusing on quality and service.",
+    "meaning": "WAI Meaning",
+    "meaningText": "W + AI = WAY - Your way to the digital future",
+    "mission": "Our Mission",
+    "missionText": "Empowering businesses with digital transformation using the latest technologies",
+    "vision": "Our Vision",
+    "visionText": "To be the leading technology partner in the region",
+    "values": "Our Values",
+    "team": "Our Team",
+    "journey": "Our Journey"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "We offer a comprehensive range of technical services",
+    "badge": "Our Services",
+    "learnMore": "Learn More",
+    "web": "Web Development",
+    "webDesc": "Modern and fast websites and web applications using latest technologies",
+    "mobile": "Mobile Development",
+    "mobileDesc": "High-quality iOS and Android applications with exceptional performance",
+    "design": "UX/UI Design",
+    "designDesc": "Attractive designs and exceptional user experience",
+    "ai": "AI Solutions",
+    "aiDesc": "Advanced chatbots and intelligent systems to boost your business"
+  },
+  "projects": {
+    "title": "Our Projects",
+    "subtitle": "We are proud to present a collection of successful projects",
+    "all": "All",
+    "web": "Web",
+    "mobile": "Mobile",
+    "ai": "AI",
+    "viewProject": "View Project",
+    "challenge": "Challenge",
+    "solution": "Solution",
+    "results": "Results",
+    "technologies": "Technologies"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We are here to help you transform your ideas into reality",
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Your Message",
+    "send": "Send Message",
+    "success": "Thank you for contacting us!",
+    "successText": "We will get back to you as soon as possible",
+    "info": "Contact Information",
+    "address": "59 Zaki Shaban St, Shebin El-Kawm, Menofia, Egypt"
+  },
+  "stats": {
+    "projects": "Projects Completed",
+    "clients": "Happy Clients",
+    "experience": "Years Experience",
+    "team": "Team Members"
+  },
+  "cta": {
+    "title": "Ready to Start Your Project?",
+    "subtitle": "Contact us today and get a free consultation",
+    "button": "Contact Us Now"
+  },
+  "footer": {
+    "description": "We transform your ideas into digital reality using the latest AI technologies.",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "followUs": "Follow Us",
+    "rights": "All Rights Reserved"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "viewAll": "View All",
+    "back": "Back"
+  },
+  "whyUs": {
+    "title": "Why WAI Soft?",
+    "subtitle": "We combine creativity and technology to deliver exceptional solutions",
+    "speed": "Fast Delivery",
+    "speedDesc": "We meet deadlines and deliver projects on time without delays",
+    "quality": "High Quality",
+    "qualityDesc": "We apply the highest quality standards in every project we work on",
+    "support": "Continuous Support",
+    "supportDesc": "Support team available 24/7 to help you"
+  },
+  "homeAbout": {
+    "badge": "About Us",
+    "title": "Your Technology Partner for the Future",
+    "description": "WAI Soft is an Egyptian company specializing in software development and design services. We live on the cutting-edge of technology focusing on quality and service, helping enterprises and startups through their development journey.",
+    "experience": "Years of Experience",
+    "projects": "Successful Projects",
+    "clients": "Satisfied Clients"
+  },
+  "homeProjects": {
+    "badge": "Our Work",
+    "title": "Projects We're Proud Of",
+    "subtitle": "Examples of projects we've successfully delivered",
+    "viewAll": "View All Projects"
+  },
+  "aiCapabilities": {
+    "badge": "Artificial Intelligence",
+    "title": "AI Capabilities",
+    "subtitle": "We leverage cutting-edge AI technologies to develop smart solutions",
+    "chatbot": "Smart Chatbot",
+    "chatbotDesc": "Advanced conversational bots that understand context and learn from interactions",
+    "automation": "Process Automation",
+    "automationDesc": "Automate repetitive tasks and improve work efficiency",
+    "analytics": "Data Analytics",
+    "analyticsDesc": "Extract valuable insights from data using machine learning",
+    "vision": "Computer Vision",
+    "visionDesc": "Process and analyze images and video with high accuracy"
+  },
+  "testimonials": {
+    "badge": "Testimonials",
+    "title": "What Our Clients Say",
+    "subtitle": "We're proud of our clients' trust and testimonials"
+  }
+}
