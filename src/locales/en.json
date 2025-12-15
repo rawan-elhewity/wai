@@ -6,19 +6,20 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "We Transform Your Ideas Into",
-    "titleHighlight": "Digital Reality",
-    "subtitle": "WAI Soft specializes in software development using the latest AI technologies. We help you build modern websites and applications that achieve your goals.",
+    "title": "We Build the Future of",
+    "titleHighlight": "Digital Experiences",
+    "subtitle": "Web — Mobile — AI-Powered UX/UI",
+    "description": "WAI Soft is a modern software company leading the technology market through professional website design, high-quality mobile apps, and AI-driven development.",
     "cta": "Start Your Project",
     "viewWork": "View Our Work",
-    "badge": "Building the Future with AI",
+    "badge": "AI-Driven Development",
     "scroll": "Discover More"
   },
   "about": {
     "title": "About Us",
     "subtitle": "We are a team of professionals passionate about technology",
     "story": "Our Story",
-    "storyText": "WAI Soft started in 2020, when a team of passionate developers decided to create a company that provides innovative technical solutions. We are an Egyptian company that lives on the cutting-edge of technology focusing on quality and service.",
+    "storyText": "WAI Soft started in 2010, when a team of passionate developers decided to create a company that provides innovative technical solutions. We are an Egyptian company that lives on the cutting-edge of technology focusing on quality and service. Over 15 years, we have delivered comprehensive digital solutions to more than 40 clients.",
     "meaning": "WAI Meaning",
     "meaningText": "W + AI = WAY - Your way to the digital future",
     "mission": "Our Mission",
@@ -105,7 +106,7 @@
   "homeAbout": {
     "badge": "About Us",
     "title": "Your Technology Partner for the Future",
-    "description": "WAI Soft is an Egyptian company specializing in software development and design services. We live on the cutting-edge of technology focusing on quality and service, helping enterprises and startups through their development journey.",
+    "description": "WAI Soft is a Digital Solutions Agency specializing in Web & App Development, Cloud Hosting, and UI/UX Design. We live on the cutting-edge of technology focusing on quality and service, helping enterprises and startups through their digital transformation journey.",
     "experience": "Years of Experience",
     "projects": "Successful Projects",
     "clients": "Satisfied Clients"

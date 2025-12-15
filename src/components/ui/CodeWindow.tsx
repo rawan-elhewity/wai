@@ -18,7 +18,7 @@ export function CodeWindow() {
   ];
 
   return (
-    <div className="relative w-full max-w-md mx-auto">
+    <div className="relative w-full max-w-md mx-auto" dir="ltr">
       <motion.div
         className="rounded-xl overflow-hidden border border-primary/20 bg-[#1E1E2E]"
         initial={{ opacity: 0, y: 20 }}
@@ -33,8 +33,8 @@ export function CodeWindow() {
           <span className="text-xs text-silver/50 ml-2">waisoft.ts</span>
         </div>
 
-        {/* Code content */}
-        <div className="p-4 font-mono text-sm">
+        {/* Code content - Always LTR for code */}
+        <div className="p-4 font-mono text-sm text-left">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

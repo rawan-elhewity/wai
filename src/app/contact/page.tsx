@@ -6,7 +6,7 @@ import { useLanguage } from "@/context";
 import { Button } from "@/components/ui/Button";
 
 export default function ContactPage() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -103,8 +103,8 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-navy dark:text-white">{t.contact.email}</h3>
-                    <a href="mailto:info@waisoft.com" className="text-silver hover:text-primary transition-colors">
-                      info@waisoft.com
+                    <a href="mailto:info@wai-soft.com" className="text-silver hover:text-primary transition-colors">
+                      info@wai-soft.com
                     </a>
                   </div>
                 </motion.div>
@@ -120,9 +120,9 @@ export default function ContactPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-navy dark:text-white">Phone</h3>
-                    <a href="tel:+201000000000" className="text-silver hover:text-primary transition-colors">
-                      +20 100 000 0000
+                    <h3 className="font-semibold text-navy dark:text-white">Website</h3>
+                    <a href="https://wai-soft.com" target="_blank" rel="noopener noreferrer" className="text-silver hover:text-primary transition-colors">
+                      wai-soft.com
                     </a>
                   </div>
                 </motion.div>

@@ -32,8 +32,10 @@ export function Navbar() {
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-center">
       <header
         className={cn(
-          "w-[80%] transition-all duration-300",
-          isScrolled ? "glass shadow-lg" : "bg-transparent"
+          "w-[80%] transition-all duration-500 backdrop-blur-md",
+          isScrolled 
+            ? "bg-white/10 dark:bg-dark/30 shadow-lg border border-white/10" 
+            : "bg-white/5 dark:bg-dark/10"
         )}
         style={{
           borderBottomLeftRadius: "20px",

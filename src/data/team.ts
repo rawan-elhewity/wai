@@ -25,6 +25,17 @@ export const team: TeamMember[] = [
   },
   {
     id: "2",
+    name: "روان الحويطي",
+    nameEn: "Rawan Elhewity",
+    role: "مطورة برمجيات",
+    roleEn: "Software Developer",
+    image: "/team/rawan.jpg",
+    social: {
+      linkedin: "https://eg.linkedin.com/in/rawan-elhewity",
+    },
+  },
+  {
+    id: "3",
     name: "نورهان سامي",
     nameEn: "Nourhan Sami",
     role: "مصممة ومطورة",

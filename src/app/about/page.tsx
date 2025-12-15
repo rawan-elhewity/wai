@@ -1,240 +1,507 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/context";
 import { team } from "@/data/team";
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-
-const stagger = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-};
+import { useRef } from "react";
+import { FloatingOrbs } from "@/components/ui/FloatingOrbs";
+import { CountUp } from "@/components/ui/CountUp";
 
 export default function AboutPage() {
   const { t, locale } = useLanguage();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
   const values = [
-    { icon: "💡", title: locale === "ar" ? "الابتكار" : "Innovation", desc: locale === "ar" ? "نسعى دائماً لإيجاد حلول مبتكرة" : "We always seek innovative solutions" },
-    { icon: "🎯", title: locale === "ar" ? "الجودة" : "Quality", desc: locale === "ar" ? "نلتزم بأعلى معايير الجودة" : "We commit to the highest quality standards" },
-    { icon: "🤝", title: locale === "ar" ? "الشراكة" : "Partnership", desc: locale === "ar" ? "نعمل كشركاء مع عملائنا" : "We work as partners with our clients" },
-    { icon: "🚀", title: locale === "ar" ? "التطور" : "Growth", desc: locale === "ar" ? "نتعلم ونتطور باستمرار" : "We continuously learn and grow" },
+    { icon: "💡", title: locale === "ar" ? "الابتكار" : "Innovation", desc: locale === "ar" ? "نسعى دائماً لإيجاد حلول مبتكرة" : "We always seek innovative solutions", color: "from-yellow-500/20 to-orange-500/20" },
+    { icon: "🎯", title: locale === "ar" ? "الجودة" : "Quality", desc: locale === "ar" ? "نلتزم بأعلى معايير الجودة" : "We commit to the highest quality standards", color: "from-blue-500/20 to-cyan-500/20" },
+    { icon: "🤝", title: locale === "ar" ? "الشراكة" : "Partnership", desc: locale === "ar" ? "نعمل كشركاء مع عملائنا" : "We work as partners with our clients", color: "from-green-500/20 to-emerald-500/20" },
+    { icon: "🚀", title: locale === "ar" ? "التطور" : "Growth", desc: locale === "ar" ? "نتعلم ونتطور باستمرار" : "We continuously learn and grow", color: "from-purple-500/20 to-pink-500/20" },
   ];
 
   const timeline = [
-    { year: "2020", title: locale === "ar" ? "البداية" : "The Beginning", desc: locale === "ar" ? "تأسيس الشركة في شبين الكوم، مصر" : "Company founded in Shebin El-Kawm, Egypt" },
-    { year: "2021", title: locale === "ar" ? "النمو" : "Growth", desc: locale === "ar" ? "توسيع الخدمات والعملاء" : "Expanding services and clients" },
-    { year: "2023", title: locale === "ar" ? "الذكاء الاصطناعي" : "AI Integration", desc: locale === "ar" ? "دمج AI في خدماتنا" : "Integrating AI in our services" },
-    { year: "2024", title: locale === "ar" ? "التطور" : "Evolution", desc: locale === "ar" ? "تطوير حلول مبتكرة" : "Developing innovative solutions" },
+    { year: "2010", title: locale === "ar" ? "البداية" : "The Beginning", desc: locale === "ar" ? "تأسيس الشركة في شبين الكوم، مصر" : "Company founded in Shebin El-Kawm, Egypt", icon: "🌱" },
+    { year: "2015", title: locale === "ar" ? "التوسع" : "Expansion", desc: locale === "ar" ? "توسيع الخدمات وبناء فريق متخصص" : "Expanding services and building specialized team", icon: "📈" },
+    { year: "2020", title: locale === "ar" ? "التحول الرقمي" : "Digital Transformation", desc: locale === "ar" ? "التركيز على الحلول السحابية والموبايل" : "Focus on cloud solutions and mobile apps", icon: "☁️" },
+    { year: "2023", title: locale === "ar" ? "الذكاء الاصطناعي" : "AI Integration", desc: locale === "ar" ? "دمج AI في خدماتنا" : "Integrating AI in our services", icon: "🤖" },
+    { year: "2025", title: locale === "ar" ? "المستقبل" : "The Future", desc: locale === "ar" ? "قيادة الابتكار التقني في المنطقة" : "Leading tech innovation in the region", icon: "🚀" },
+  ];
+
+  const stats = [
+    { value: 15, suffix: "+", label: locale === "ar" ? "سنة خبرة" : "Years Experience", icon: "📅" },
+    { value: 50, suffix: "+", label: locale === "ar" ? "مشروع منجز" : "Projects Completed", icon: "🎯" },
+    { value: 40, suffix: "+", label: locale === "ar" ? "عميل سعيد" : "Happy Clients", icon: "😊" },
+    { value: 10, suffix: "+", label: locale === "ar" ? "عضو فريق" : "Team Members", icon: "👥" },
   ];
 
   return (
-    <div className="min-h-screen pt-24">
-      {/* Hero */}
-      <section className="py-20 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h1
-            className="text-4xl sm:text-5xl font-bold text-navy dark:text-white mb-6"
-            initial={{ opacity: 0, y: 30 }}
+    <div ref={containerRef} className="min-h-screen pt-24 overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 sm:px-6 overflow-hidden">
+        <FloatingOrbs />
+        <motion.div 
+          className="absolute top-20 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[150px]"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        
+        <div className="relative max-w-6xl mx-auto text-center">
+          <motion.span
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6 border border-primary/20"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            {t.about.title}
-          </motion.h1>
-          <motion.p
-            className="text-lg text-silver max-w-2xl mx-auto"
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            {locale === "ar" ? "منذ 2010" : "Since 2010"}
+          </motion.span>
+          
+          <motion.h1
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-navy dark:text-white mb-6"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
+            {t.about.title}
+          </motion.h1>
+          
+          <motion.p
+            className="text-lg sm:text-xl text-silver max-w-2xl mx-auto mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
             {t.about.subtitle}
           </motion.p>
+
+          {/* Stats Grid */}
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            {stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden"
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+                />
+                <div className="relative z-10 text-center">
+                  <span className="text-2xl mb-2 block">{stat.icon}</span>
+                  <CountUp end={stat.value} suffix={stat.suffix} className="text-3xl font-bold text-white" />
+                  <p className="text-silver text-sm mt-1">{stat.label}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* Story Section */}
-      <section className="py-20 px-4 sm:px-6 bg-white/50 dark:bg-dark-50/50">
+      {/* Story Section - Enhanced */}
+      <section className="relative py-28 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
-              <h2 className="text-3xl font-bold text-navy dark:text-white mb-6">
+              <motion.span 
+                className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20"
+              >
                 {t.about.story}
+              </motion.span>
+              
+              <h2 className="text-3xl sm:text-4xl font-bold text-navy dark:text-white mb-6 leading-tight">
+                {locale === "ar" ? "15 عاماً من الابتكار والتميز" : "15 Years of Innovation & Excellence"}
               </h2>
-              <p className="text-silver mb-6 leading-relaxed">{t.about.storyText}</p>
-              <div className="p-6 rounded-2xl bg-gradient-primary">
-                <p className="text-white font-semibold text-lg">{t.about.meaningText}</p>
-              </div>
+              
+              <p className="text-silver mb-8 leading-relaxed text-lg">{t.about.storyText}</p>
+              
+              <motion.div 
+                className="p-6 rounded-2xl bg-gradient-to-r from-primary via-navy to-burgundy relative overflow-hidden"
+                whileHover={{ scale: 1.02 }}
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full"
+                  animate={{ translateX: ["100%", "-100%"] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                />
+                <p className="text-white font-semibold text-xl relative z-10">{t.about.meaningText}</p>
+              </motion.div>
             </motion.div>
+            
             <motion.div
               className="flex items-center justify-center"
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              style={{ y }}
             >
               <div className="relative">
-                <div className="text-center p-12 rounded-3xl bg-dark-50 dark:bg-dark-100">
+                {/* Animated rings */}
+                <motion.div
+                  className="absolute inset-0 rounded-full border-2 border-primary/30"
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  style={{ width: "300px", height: "300px", margin: "auto" }}
+                />
+                <motion.div
+                  className="absolute inset-0 rounded-full border-2 border-primary/20"
+                  animate={{ scale: [1, 1.8, 1], opacity: [0.3, 0, 0.3] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+                  style={{ width: "300px", height: "300px", margin: "auto" }}
+                />
+                
+                <motion.div 
+                  className="relative text-center p-16 rounded-full bg-gradient-to-br from-dark-50 to-dark-100 border border-white/10"
+                  whileHover={{ rotate: 5 }}
+                  transition={{ type: "spring" }}
+                >
                   <motion.p
-                    className="text-6xl font-bold text-primary mb-4"
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-7xl font-bold bg-gradient-to-r from-primary via-white to-burgundy bg-clip-text text-transparent mb-2"
+                    animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+                    transition={{ duration: 5, repeat: Infinity }}
+                    style={{ backgroundSize: "200% 200%" }}
                   >
                     W + AI
                   </motion.p>
-                  <p className="text-2xl text-white">=</p>
-                  <p className="text-4xl font-bold text-white mt-4">WAY</p>
-                </div>
+                  <motion.p 
+                    className="text-3xl text-white/50"
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    =
+                  </motion.p>
+                  <p className="text-5xl font-bold text-white mt-2">WAY</p>
+                  <p className="text-silver text-sm mt-4">{locale === "ar" ? "طريقك للمستقبل" : "Your Way to Future"}</p>
+                </motion.div>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Mission & Vision */}
-      <section className="py-20 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
+      {/* Mission & Vision - Enhanced */}
+      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-burgundy/5" />
+        
+        <div className="relative max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-8">
             <motion.div
-              className="p-8 rounded-2xl bg-gradient-primary text-white"
+              className="group relative p-10 rounded-3xl overflow-hidden"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              whileHover={{ y: -10 }}
             >
-              <h3 className="text-2xl font-bold mb-4">{t.about.mission}</h3>
-              <p className="text-white/90">{t.about.missionText}</p>
+              <div className="absolute inset-0 bg-gradient-to-br from-primary via-navy to-primary opacity-90" />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+              />
+              <div className="relative z-10">
+                <motion.span 
+                  className="text-5xl mb-6 block"
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                >
+                  🎯
+                </motion.span>
+                <h3 className="text-3xl font-bold text-white mb-4">{t.about.mission}</h3>
+                <p className="text-white/80 text-lg leading-relaxed">{t.about.missionText}</p>
+              </div>
             </motion.div>
+            
             <motion.div
-              className="p-8 rounded-2xl bg-dark-50 dark:bg-dark-100 text-white"
+              className="group relative p-10 rounded-3xl overflow-hidden"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
+              whileHover={{ y: -10 }}
             >
-              <h3 className="text-2xl font-bold mb-4">{t.about.vision}</h3>
-              <p className="text-silver">{t.about.visionText}</p>
+              <div className="absolute inset-0 bg-gradient-to-br from-dark-50 to-dark-100 border border-white/10" />
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+              />
+              <div className="relative z-10">
+                <motion.span 
+                  className="text-5xl mb-6 block"
+                  whileHover={{ scale: 1.2, rotate: -10 }}
+                >
+                  👁️
+                </motion.span>
+                <h3 className="text-3xl font-bold text-white mb-4">{t.about.vision}</h3>
+                <p className="text-silver text-lg leading-relaxed">{t.about.visionText}</p>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Values */}
-      <section className="py-20 px-4 sm:px-6 bg-white/50 dark:bg-dark-50/50">
+      {/* Values Section - Enhanced */}
+      <section className="relative py-28 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
-          <motion.h2
-            className="text-3xl font-bold text-center text-navy dark:text-white mb-12"
+          <motion.div 
+            className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {t.about.values}
-          </motion.h2>
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={stagger}
-          >
+            <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20">
+              {locale === "ar" ? "ما يميزنا" : "What Defines Us"}
+            </motion.span>
+            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
+              {t.about.values}
+            </h2>
+          </motion.div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {values.map((value, i) => (
               <motion.div
                 key={i}
-                className="text-center p-6 rounded-2xl bg-white dark:bg-dark-100 border border-silver/10"
-                variants={fadeInUp}
-                whileHover={{ y: -5 }}
+                className="group relative text-center p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden"
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -10, scale: 1.02 }}
               >
+                <motion.div 
+                  className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                />
+                
                 <motion.div
-                  className="text-4xl mb-4"
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, type: "spring" }}
+                  className="relative z-10 text-5xl mb-6 inline-block"
+                  whileHover={{ scale: 1.3, rotate: [0, -10, 10, 0] }}
+                  transition={{ duration: 0.5 }}
                 >
                   {value.icon}
                 </motion.div>
-                <h3 className="text-lg font-semibold text-navy dark:text-white mb-2">
+                
+                <h3 className="relative z-10 text-xl font-bold text-navy dark:text-white mb-3">
                   {value.title}
                 </h3>
-                <p className="text-silver text-sm">{value.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-20 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            className="text-3xl font-bold text-center text-navy dark:text-white mb-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            {t.about.journey}
-          </motion.h2>
-          <div className="grid md:grid-cols-4 gap-8">
-            {timeline.map((item, i) => (
-              <motion.div
-                key={i}
-                className="relative"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <div className="text-4xl font-bold text-primary mb-2">{item.year}</div>
-                <h3 className="text-xl font-semibold text-navy dark:text-white mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-silver text-sm">{item.desc}</p>
+                <p className="relative z-10 text-silver text-sm leading-relaxed">{value.desc}</p>
+                
+                {/* Shine effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+                />
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Team */}
-      <section className="py-20 px-4 sm:px-6 bg-white/50 dark:bg-dark-50/50">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            className="text-3xl font-bold text-center text-navy dark:text-white mb-12"
+      {/* Timeline Section - Enhanced */}
+      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-dark-100/50 to-transparent" />
+        
+        <div className="relative max-w-6xl mx-auto">
+          <motion.div 
+            className="text-center mb-16"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {t.about.team}
-          </motion.h2>
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
-            initial="hidden"
-            whileInView="visible"
+            <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20">
+              {locale === "ar" ? "مسيرتنا" : "Our Journey"}
+            </motion.span>
+            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
+              {t.about.journey}
+            </h2>
+          </motion.div>
+          
+          {/* Timeline */}
+          <div className="relative">
+            {/* Timeline line */}
+            <motion.div 
+              className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-gradient-to-b from-primary via-navy to-burgundy hidden md:block"
+              initial={{ scaleY: 0 }}
+              whileInView={{ scaleY: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5 }}
+            />
+            
+            <div className="space-y-12 md:space-y-0">
+              {timeline.map((item, i) => (
+                <motion.div
+                  key={i}
+                  className={`relative flex flex-col md:flex-row items-center gap-8 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+                  initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.2 }}
+                >
+                  {/* Content */}
+                  <div className={`flex-1 ${i % 2 === 0 ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12'}`}>
+                    <motion.div
+                      className="group p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/30 transition-colors"
+                      whileHover={{ scale: 1.02, y: -5 }}
+                    >
+                      <span className="text-3xl mb-3 block">{item.icon}</span>
+                      <div className="text-4xl font-bold text-primary mb-2">{item.year}</div>
+                      <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                      <p className="text-silver">{item.desc}</p>
+                    </motion.div>
+                  </div>
+                  
+                  {/* Center dot */}
+                  <motion.div 
+                    className="hidden md:flex w-6 h-6 rounded-full bg-primary border-4 border-dark items-center justify-center z-10"
+                    whileHover={{ scale: 1.5 }}
+                    animate={{ boxShadow: ["0 0 0 0 rgba(122,154,199,0.4)", "0 0 0 10px rgba(122,154,199,0)", "0 0 0 0 rgba(122,154,199,0.4)"] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  
+                  {/* Empty space for alignment */}
+                  <div className="flex-1 hidden md:block" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team Section - Enhanced */}
+      <section className="relative py-28 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            variants={stagger}
           >
-            {team.map((member) => (
+            <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20">
+              {locale === "ar" ? "فريق العمل" : "Our Team"}
+            </motion.span>
+            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
+              {t.about.team}
+            </h2>
+            <p className="text-silver max-w-xl mx-auto">
+              {locale === "ar" ? "فريق من المحترفين الشغوفين بالتكنولوجيا والابتكار" : "A team of professionals passionate about technology and innovation"}
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {team.map((member, i) => (
               <motion.div
                 key={member.id}
-                className="text-center"
-                variants={fadeInUp}
+                className="group relative text-center"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
               >
-                <div className="w-24 h-24 mx-auto mb-4 bg-gradient-primary rounded-full flex items-center justify-center">
-                  <span className="text-3xl">👤</span>
-                </div>
-                <h3 className="text-lg font-semibold text-navy dark:text-white">
-                  {locale === "ar" ? member.name : member.nameEn}
-                </h3>
-                <p className="text-silver text-sm">
-                  {locale === "ar" ? member.role : member.roleEn}
-                </p>
+                <motion.div
+                  className="relative p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden"
+                  whileHover={{ y: -10, borderColor: "rgba(122,154,199,0.3)" }}
+                >
+                  {/* Gradient overlay */}
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  />
+                  
+                  {/* Avatar */}
+                  <motion.div 
+                    className="relative w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary via-navy to-burgundy p-1"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  >
+                    <div className="w-full h-full rounded-full bg-dark-50 flex items-center justify-center overflow-hidden">
+                      <motion.span 
+                        className="text-5xl"
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                      >
+                        👤
+                      </motion.span>
+                    </div>
+                    
+                    {/* Online indicator */}
+                    <motion.div 
+                      className="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-green-500 border-2 border-dark-50"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  </motion.div>
+                  
+                  <h3 className="relative z-10 text-xl font-bold text-white mb-2">
+                    {locale === "ar" ? member.name : member.nameEn}
+                  </h3>
+                  <p className="relative z-10 text-primary font-medium mb-4">
+                    {locale === "ar" ? member.role : member.roleEn}
+                  </p>
+                  
+                  {/* Social links */}
+                  {member.social.linkedin && (
+                    <motion.a
+                      href={member.social.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-silver hover:text-primary hover:bg-primary/20 transition-colors"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                      </svg>
+                    </motion.a>
+                  )}
+                  
+                  {/* Shine effect */}
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+                  />
+                </motion.div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-navy to-burgundy opacity-90" />
+        <FloatingOrbs />
+        
+        <motion.div 
+          className="relative z-10 max-w-4xl mx-auto text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <motion.span 
+            className="text-6xl mb-6 block"
+            animate={{ rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
+            🚀
+          </motion.span>
+          <h2 className="text-3xl sm:text-5xl font-bold text-white mb-6">
+            {locale === "ar" ? "جاهز للانطلاق معنا؟" : "Ready to Start with Us?"}
+          </h2>
+          <p className="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
+            {locale === "ar" ? "دعنا نحول فكرتك إلى واقع رقمي مذهل" : "Let us transform your idea into an amazing digital reality"}
+          </p>
+          <motion.a
+            href="/contact"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-navy font-bold text-lg hover:bg-white/90 transition-colors"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {locale === "ar" ? "تواصل معنا الآن" : "Contact Us Now"}
+            <motion.span animate={{ x: [0, -5, 0] }} transition={{ duration: 1, repeat: Infinity }}>
+              ←
+            </motion.span>
+          </motion.a>
+        </motion.div>
       </section>
     </div>
   );
