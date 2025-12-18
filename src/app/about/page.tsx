@@ -57,13 +57,22 @@ export default function AboutPage() {
           </motion.span>
           
           <motion.h1
-            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-navy dark:text-white mb-6"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-navy dark:text-white mb-4"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
             {t.about.title}
           </motion.h1>
+
+          <motion.p
+            className="text-primary font-semibold text-xl mb-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.15 }}
+          >
+            We Develop, You Grow
+          </motion.p>
           
           <motion.p
             className="text-lg sm:text-xl text-silver max-w-2xl mx-auto mb-12"

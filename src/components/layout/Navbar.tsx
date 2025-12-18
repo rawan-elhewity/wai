@@ -22,8 +22,13 @@ export function Navbar() {
     { href: "/contact", label: t.nav.contact },
   ];
 
+  const [showLogo, setShowLogo] = useState(false);
+
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+      setShowLogo(window.scrollY > 400);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -46,14 +51,23 @@ export function Navbar() {
           <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
-            <Image
-              src="/logo.png"
-              alt="WAI Soft"
-              width={120}
-              height={40}
-              className="h-10 w-auto"
-              priority
-            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ 
+                opacity: showLogo ? 1 : 0,
+                scale: showLogo ? 1 : 0.8,
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              <Image
+                src="/logo.png"
+                alt="WAI Soft"
+                width={120}
+                height={40}
+                className="h-10 w-auto"
+                priority
+              />
+            </motion.div>
           </Link>
 
           {/* Desktop Navigation */}

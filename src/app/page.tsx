@@ -1,26 +1,39 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { useLanguage } from "@/context";
+import { useLanguage, useTheme } from "@/context";
 import { FloatingOrbs } from "@/components/ui/FloatingOrbs";
 import { ParticleField } from "@/components/ui/ParticleField";
 import { CodeWindow } from "@/components/ui/CodeWindow";
 import { CountUp } from "@/components/ui/CountUp";
+import { AnimatedLogo } from "@/components/ui/AnimatedLogo";
+import { ServiceIcon, type ServiceType } from "@/components/ui/ServiceIcons";
 
 export default function Home() {
   const { t, locale } = useLanguage();
+  useTheme(); // Keep context connected
   const heroRef = useRef<HTMLDivElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress: aboutScrollProgress } = useScroll({
+    target: aboutRef,
+    offset: ["start start", "end end"],
+  });
+
+  // For RTL: move from right to left (positive to negative in RTL context)
+  const aboutX = useTransform(aboutScrollProgress, [0, 1], ["0%", "66.666%"]);
 
 
 
-  const services = [
-    { icon: "🌐", title: t.services.web, desc: t.services.webDesc, gradient: "from-blue-500 to-cyan-500" },
-    { icon: "📱", title: t.services.mobile, desc: t.services.mobileDesc, gradient: "from-purple-500 to-pink-500" },
-    { icon: "🎨", title: t.services.design, desc: t.services.designDesc, gradient: "from-orange-500 to-red-500" },
-    { icon: "🤖", title: t.services.ai, desc: t.services.aiDesc, gradient: "from-green-500 to-emerald-500" },
+  const services: { iconType: ServiceType; title: string; desc: string; gradient: string }[] = [
+    { iconType: "web", title: t.services.web, desc: t.services.webDesc, gradient: "from-blue-500 to-cyan-500" },
+    { iconType: "mobile", title: t.services.mobile, desc: t.services.mobileDesc, gradient: "from-purple-500 to-pink-500" },
+    { iconType: "design", title: t.services.design, desc: t.services.designDesc, gradient: "from-orange-500 to-red-500" },
+    { iconType: "cloud", title: t.services.cloud, desc: t.services.cloudDesc, gradient: "from-sky-500 to-indigo-500" },
+    { iconType: "ai", title: t.services.ai, desc: t.services.aiDesc, gradient: "from-green-500 to-emerald-500" },
   ];
 
   const featuredProjects = [
@@ -45,7 +58,68 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-hidden">
+      <AnimatedLogo />
       <ParticleField />
+
+      {/* Logo Intro Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
+        {/* Gradient glow from bottom - blue */}
+        <motion.div 
+          className="absolute inset-0"
+          animate={{
+            opacity: [0.7, 1, 0.7],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          style={{
+            background: `radial-gradient(ellipse 120% 60% at 50% 120%, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 30%, transparent 60%)`,
+          }}
+        />
+        {/* Gradient glow from bottom - pink/magenta */}
+        <motion.div 
+          className="absolute inset-0"
+          animate={{
+            opacity: [0.8, 1, 0.8],
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.5,
+          }}
+          style={{
+            background: `radial-gradient(ellipse 100% 50% at 30% 110%, rgba(236, 72, 153, 0.7) 0%, rgba(168, 85, 247, 0.4) 30%, transparent 55%)`,
+          }}
+        />
+        {/* Gradient glow from bottom - orange */}
+        <motion.div 
+          className="absolute inset-0"
+          animate={{
+            opacity: [0.6, 0.9, 0.6],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+          style={{
+            background: `radial-gradient(ellipse 100% 50% at 70% 110%, rgba(249, 115, 22, 0.7) 0%, rgba(234, 179, 8, 0.3) 30%, transparent 55%)`,
+          }}
+        />
+        {/* Grain texture overlay - separate layer on top */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+            opacity: 0.15,
+            mixBlendMode: "overlay",
+          }}
+        />
+      </section>
 
       {/* Hero Section - Creative Centered */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -83,7 +157,7 @@ export default function Home() {
 
         {/* Content */}
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
-          {/* Company Name with AI Badge */}
+          {/* Company Name with Slogan */}
           <motion.div
             className="mb-8"
             initial={{ opacity: 0, y: 20 }}
@@ -91,25 +165,24 @@ export default function Home() {
             transition={{ delay: 0.1 }}
           >
             <span className="text-3xl sm:text-4xl font-bold text-primary tracking-wider">WAI SOFT</span>
-            <motion.span 
-              className="inline-flex items-center gap-2 mx-4 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 text-xs text-primary"
-              animate={{ scale: [1, 1.02, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
+            <motion.p
+              className="text-silver/80 text-lg sm:text-xl md:text-2xl mt-2 tracking-wide"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              {t.hero.badge}
-            </motion.span>
+              We Develop, You Grow
+            </motion.p>
           </motion.div>
 
           {/* Main Title */}
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight whitespace-nowrap"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <span className="text-white">{t.hero.title}</span>
-            <br />
+            <span className="text-white">{t.hero.title}</span>{" "}
             <motion.span 
               className="gradient-text"
               animate={{ 
@@ -164,26 +237,7 @@ export default function Home() {
             </Button>
           </motion.div>
 
-          {/* Tech Stack Pills */}
-          <motion.div
-            className="flex flex-wrap justify-center gap-3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          >
-            {["Next.js", "React Native", "AI/ML", "Node.js", "Python"].map((tech, i) => (
-              <motion.span
-                key={tech}
-                className="px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-silver text-xs sm:text-sm"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8 + i * 0.1 }}
-                whileHover={{ scale: 1.05, borderColor: "rgba(122,154,199,0.3)" }}
-              >
-                {tech}
-              </motion.span>
-            ))}
-          </motion.div>
+
         </div>
 
         {/* Scroll indicator */}
@@ -206,163 +260,150 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* About Section - Enhanced */}
-      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
-        {/* Background decorations */}
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div 
-            className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-[100px]"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 8, repeat: Infinity }}
-          />
-          <motion.div 
-            className="absolute bottom-20 left-10 w-64 h-64 bg-burgundy/10 rounded-full blur-[80px]"
-            animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
-            transition={{ duration: 10, repeat: Infinity }}
-          />
-        </div>
-
-        <div className="relative max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            {/* Left side - Content */}
-            <div>
-              <motion.span 
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-navy/10 text-primary text-sm font-medium mb-6 border border-primary/20"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                {t.homeAbout?.badge || "من نحن"}
-              </motion.span>
-              
-              <motion.h2 
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-navy dark:text-white mb-6 leading-tight"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-              >
-                {t.homeAbout?.title || "شريكك التقني نحو المستقبل"}
-              </motion.h2>
-              
-              <motion.p 
-                className="text-silver text-base sm:text-lg mb-8 leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-              >
-                {t.homeAbout?.description || "WAI Soft شركة سعودية متخصصة في تطوير البرمجيات وحلول الذكاء الاصطناعي."}
-              </motion.p>
-
-              {/* Features list */}
-              <motion.div 
-                className="space-y-4 mb-10"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-              >
-                {[
-                  { icon: "🚀", text: locale === "ar" ? "تقنيات حديثة ومتطورة" : "Modern & Advanced Technologies" },
-                  { icon: "💡", text: locale === "ar" ? "حلول مبتكرة ومخصصة" : "Innovative & Custom Solutions" },
-                  { icon: "🛡️", text: locale === "ar" ? "أمان وجودة عالية" : "High Security & Quality" },
-                ].map((feature, i) => (
-                  <motion.div 
-                    key={i}
-                    className="flex items-center gap-3 group"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.3 + i * 0.1 }}
-                  >
-                    <span className="flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-navy/10 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                      {feature.icon}
-                    </span>
-                    <span className="text-silver group-hover:text-white transition-colors">{feature.text}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5 }}
-              >
-                <Link href="/about" className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary/10 to-navy/10 text-primary font-medium border border-primary/20 hover:border-primary/40 hover:bg-primary/20 transition-all">
-                  {t.common.learnMore}
-                  <motion.span animate={{ x: [0, -5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>←</motion.span>
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Right side - Stats & Code Window */}
-            <div className="space-y-6">
-              {/* Stats Grid - New Design */}
-              <div className="grid grid-cols-3 gap-3 sm:gap-4">
-                {[
-                  { value: 15, suffix: "+", label: t.homeAbout?.experience || "سنوات من الخبرة", icon: "📅", color: "from-blue-500/20 to-cyan-500/20" },
-                  { value: 50, suffix: "+", label: t.homeAbout?.projects || "مشروع ناجح", icon: "🎯", color: "from-purple-500/20 to-pink-500/20" },
-                  { value: 40, suffix: "+", label: t.homeAbout?.clients || "عميل راضٍ", icon: "😊", color: "from-green-500/20 to-emerald-500/20" },
-                ].map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    className="group relative text-center p-4 sm:p-5 rounded-2xl bg-dark-50/80 backdrop-blur-sm border border-white/5 overflow-hidden"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ delay: 0.2 + i * 0.1 }}
-                    whileHover={{ scale: 1.05, y: -5 }}
-                  >
-                    {/* Gradient background on hover */}
-                    <motion.div 
-                      className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                    />
-                    
-                    {/* Icon */}
-                    <motion.div 
-                      className="relative z-10 text-2xl sm:text-3xl mb-2"
-                      whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      {stat.icon}
-                    </motion.div>
-                    
-                    <div className="relative z-10">
-                      <CountUp 
-                        end={stat.value} 
-                        suffix={stat.suffix} 
-                        className="text-2xl sm:text-3xl font-bold text-white" 
-                      />
-                      <p className="text-silver/80 text-[10px] sm:text-xs mt-1 leading-tight">{stat.label}</p>
-                    </div>
-
-                    {/* Shine effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-                    />
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Code Window */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: 0.3 }}
-                className="relative"
-              >
-                {/* Glow behind code window */}
-                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-transparent to-burgundy/20 rounded-3xl blur-2xl opacity-50" />
-                <div className="relative">
-                  <CodeWindow />
-                </div>
-              </motion.div>
-            </div>
+      {/* About Section - Horizontal Scroll */}
+      <section ref={aboutRef} className="relative h-[200vh]">
+        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+          {/* Background decorations */}
+          <div className="absolute inset-0 pointer-events-none">
+            <motion.div
+              className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-[100px]"
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+              transition={{ duration: 8, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute bottom-20 left-10 w-64 h-64 bg-burgundy/10 rounded-full blur-[80px]"
+              animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
+              transition={{ duration: 10, repeat: Infinity }}
+            />
           </div>
+
+          <motion.div className="flex flex-row-reverse gap-16 px-8 sm:px-16" style={{ x: aboutX }}>
+            {/* Panel 1 - About Content */}
+            <div className="flex-shrink-0 w-screen h-screen flex items-center justify-center px-4">
+              <div className="max-w-2xl text-center">
+                <motion.span
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-navy/10 text-primary text-sm font-medium mb-6 border border-primary/20"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  {t.homeAbout?.badge || "من نحن"}
+                </motion.span>
+
+                <motion.h2
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-navy dark:text-white mb-6 leading-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                >
+                  {t.homeAbout?.title || "شريكك التقني نحو المستقبل"}
+                </motion.h2>
+
+                <motion.p
+                  className="text-silver text-base sm:text-lg mb-8 leading-relaxed"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {t.homeAbout?.description ||
+                    "WAI Soft شركة سعودية متخصصة في تطوير البرمجيات وحلول الذكاء الاصطناعي."}
+                </motion.p>
+
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <Link
+                    href="/about"
+                    className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-primary/10 to-navy/10 text-primary font-medium border border-primary/20 hover:border-primary/40 hover:bg-primary/20 transition-all"
+                  >
+                    {t.common.learnMore}
+                    <motion.span animate={{ x: [0, -5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                      ←
+                    </motion.span>
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
+
+            {/* Panel 2 - Features */}
+            <div className="flex-shrink-0 w-screen h-screen flex items-center justify-center px-4">
+              <div className="max-w-xl">
+                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-10 text-center">
+                  {locale === "ar" ? "لماذا نحن مميزون؟" : "Why We're Different"}
+                </h3>
+                <div className="space-y-6">
+                  {[
+                    { icon: "🚀", text: locale === "ar" ? "تقنيات حديثة ومتطورة" : "Modern & Advanced Technologies" },
+                    { icon: "💡", text: locale === "ar" ? "حلول مبتكرة ومخصصة" : "Innovative & Custom Solutions" },
+                    { icon: "🛡️", text: locale === "ar" ? "أمان وجودة عالية" : "High Security & Quality" },
+                    { icon: "⚡", text: locale === "ar" ? "سرعة في التنفيذ" : "Fast Delivery" },
+                    { icon: "🤝", text: locale === "ar" ? "دعم فني متواصل" : "Continuous Support" },
+                  ].map((feature, i) => (
+                    <motion.div
+                      key={i}
+                      className="flex items-center gap-4 group p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all"
+                      initial={{ opacity: 0, x: 50 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      <span className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-navy/10 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                        {feature.icon}
+                      </span>
+                      <span className="text-silver text-lg group-hover:text-white transition-colors">{feature.text}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Panel 3 - Stats & Code */}
+            <div className="flex-shrink-0 w-screen h-screen flex items-center justify-center px-4">
+              <div className="max-w-2xl w-full space-y-8">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-3 gap-4 sm:gap-6">
+                  {[
+                    { value: 15, suffix: "+", label: t.homeAbout?.experience || "سنوات من الخبرة", icon: "📅", color: "from-blue-500/20 to-cyan-500/20" },
+                    { value: 50, suffix: "+", label: t.homeAbout?.projects || "مشروع ناجح", icon: "🎯", color: "from-purple-500/20 to-pink-500/20" },
+                    { value: 40, suffix: "+", label: t.homeAbout?.clients || "عميل راضٍ", icon: "😊", color: "from-green-500/20 to-emerald-500/20" },
+                  ].map((stat, i) => (
+                    <motion.div
+                      key={i}
+                      className="group relative text-center p-6 rounded-2xl bg-dark-50/80 backdrop-blur-sm border border-white/5 overflow-hidden"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 + i * 0.1 }}
+                      whileHover={{ scale: 1.05, y: -5 }}
+                    >
+                      <motion.div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                      <motion.div className="relative z-10 text-3xl sm:text-4xl mb-3" whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }} transition={{ duration: 0.4 }}>
+                        {stat.icon}
+                      </motion.div>
+                      <div className="relative z-10">
+                        <CountUp end={stat.value} suffix={stat.suffix} className="text-3xl sm:text-4xl font-bold text-white" />
+                        <p className="text-silver/80 text-xs sm:text-sm mt-2">{stat.label}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Code Window */}
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.3 }} className="relative">
+                  <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-transparent to-burgundy/20 rounded-3xl blur-2xl opacity-50" />
+                  <div className="relative">
+                    <CodeWindow />
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -382,7 +423,7 @@ export default function Home() {
             <p className="text-silver max-w-xl mx-auto text-lg">{t.services.subtitle}</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, i) => (
               <motion.div
                 key={i}
@@ -400,10 +441,10 @@ export default function Home() {
                 
                 {/* Icon with glow */}
                 <motion.div 
-                  className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center text-4xl mb-6 border border-white/10"
+                  className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center mb-6 border border-white/10"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                 >
-                  {service.icon}
+                  <ServiceIcon type={service.iconType} className="w-8 h-8 text-primary" />
                   <motion.div
                     className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${service.gradient} blur-xl opacity-0 group-hover:opacity-50 transition-opacity`}
                   />
@@ -653,10 +694,19 @@ export default function Home() {
 
                 <div className="flex items-center gap-4">
                   <motion.div 
-                    className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-navy flex items-center justify-center text-white text-xl font-bold"
+                    className="relative w-14 h-14 rounded-full bg-gradient-to-br from-primary to-navy p-0.5"
                     whileHover={{ scale: 1.1 }}
                   >
-                    {testimonial.name.charAt(0)}
+                    <div className="w-full h-full rounded-full bg-dark-50 flex items-center justify-center">
+                      <svg className="w-7 h-7 text-primary/60" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                      </svg>
+                    </div>
+                    <motion.div 
+                      className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-green-500 border-2 border-dark-50"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
                   </motion.div>
                   <div>
                     <p className="font-bold text-navy dark:text-white">{testimonial.name}</p>

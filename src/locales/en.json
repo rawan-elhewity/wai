@@ -42,7 +42,9 @@
     "design": "UX/UI Design",
     "designDesc": "Attractive designs and exceptional user experience",
     "ai": "AI Solutions",
-    "aiDesc": "Advanced chatbots and intelligent systems to boost your business"
+    "aiDesc": "Advanced chatbots and intelligent systems to boost your business",
+    "cloud": "Cloud Hosting",
+    "cloudDesc": "Secure and reliable cloud hosting solutions with high performance and continuous support"
   },
   "projects": {
     "title": "Our Projects",

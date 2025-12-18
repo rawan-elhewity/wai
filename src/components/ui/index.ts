@@ -8,3 +8,5 @@ export { AIBrain } from "./AIBrain";
 export { CodeWindow } from "./CodeWindow";
 export { CountUp } from "./CountUp";
 export { TechStack, FloatingTechIcons } from "./TechStack";
+export { AnimatedLogo } from "./AnimatedLogo";
+export { ServiceIcon, WebIcon, MobileIcon, DesignIcon, CloudIcon, AIIcon } from "./ServiceIcons";

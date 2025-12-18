@@ -31,6 +31,9 @@ export function Footer() {
             <Link href="/" className="inline-block mb-4">
               <Image src="/logo.png" alt="WAI Soft" width={120} height={40} className="h-10 w-auto" />
             </Link>
+            <p className="text-primary font-semibold text-lg mb-2">
+              We Develop, You Grow
+            </p>
             <p className="text-silver text-sm leading-relaxed mb-6 max-w-sm">
               {t.footer.description}
             </p>
