@@ -47,7 +47,7 @@ export default function ProjectsPage() {
             {t.projects.title}
           </motion.h1>
           <motion.p
-            className="text-lg text-silver max-w-2xl mx-auto"
+            className="text-lg text-navy/70 dark:text-silver max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -125,7 +125,7 @@ export default function ProjectsPage() {
                       <h3 className="text-lg font-semibold text-navy dark:text-white mb-2 group-hover:text-primary transition-colors">
                         {locale === "ar" ? project.title : project.titleEn}
                       </h3>
-                      <p className="text-silver text-sm mb-4">
+                      <p className="text-navy/70 dark:text-silver text-sm mb-4">
                         {locale === "ar" ? project.description : project.descriptionEn}
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -199,7 +199,7 @@ export default function ProjectsPage() {
                   )}
                 </div>
 
-                <p className="text-silver mb-6">
+                <p className="text-navy/70 dark:text-silver mb-6">
                   {locale === "ar" ? selected.description : selected.descriptionEn}
                 </p>
 
@@ -209,7 +209,7 @@ export default function ProjectsPage() {
                     <h3 className="font-semibold text-navy dark:text-white mb-2">
                       {t.projects.challenge}
                     </h3>
-                    <p className="text-silver text-sm">
+                    <p className="text-navy/70 dark:text-silver text-sm">
                       {locale === "ar" ? selected.challenge : selected.challengeEn}
                     </p>
                   </div>
@@ -217,7 +217,7 @@ export default function ProjectsPage() {
                     <h3 className="font-semibold text-navy dark:text-white mb-2">
                       {t.projects.solution}
                     </h3>
-                    <p className="text-silver text-sm">
+                    <p className="text-navy/70 dark:text-silver text-sm">
                       {locale === "ar" ? selected.solution : selected.solutionEn}
                     </p>
                   </div>

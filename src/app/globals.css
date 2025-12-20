@@ -8,6 +8,8 @@
   --navy: #4A5578;
   --burgundy: #2D1A24;
   --silver: #C8CED2;
+  --cyan: #8DE4F2;
+  --cyan-dark: #4DCCE2;
   
   --bg-light: #FAFAFA;
   --bg-dark: #0A0A0F;
@@ -63,6 +65,15 @@ body {
   animation: gradientShift 6s ease infinite;
 }
 
+.gradient-text-cyan {
+  background: linear-gradient(135deg, #8DE4F2 0%, #7A9AC7 50%, #4A5578 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 6s ease infinite;
+}
+
 @keyframes gradientShift {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -87,8 +98,16 @@ body {
   box-shadow: 0 0 20px rgba(122, 154, 199, 0.3), 0 0 40px rgba(74, 85, 120, 0.1);
 }
 
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(141, 228, 242, 0.4), 0 0 40px rgba(141, 228, 242, 0.2);
+}
+
 .glow-hover:hover {
   box-shadow: 0 0 40px rgba(122, 154, 199, 0.5), 0 0 80px rgba(74, 85, 120, 0.2);
+}
+
+.glow-cyan-hover:hover {
+  box-shadow: 0 0 40px rgba(141, 228, 242, 0.6), 0 0 80px rgba(141, 228, 242, 0.3);
 }
 
 /* Card Styles */
@@ -181,4 +200,52 @@ body {
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-20px); }
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: fit-content;
+  animation: marquee 20s linear infinite;
+}
+
+/* Loader Animation */
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(122, 154, 199, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--primary);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Spotlight Animation */
+@keyframes spotlight {
+  0% {
+    opacity: 0;
+    transform: translate(-72%, -62%) scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -40%) scale(1);
+  }
+}
+
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
 }

@@ -25,7 +25,7 @@ export function TechStack() {
           whileHover={{ scale: 1.1, borderColor: "rgba(122,154,199,0.5)" }}
         >
           <span className="text-xl">{tech.icon}</span>
-          <span className="text-sm text-silver font-medium">{tech.name}</span>
+          <span className="text-sm text-navy/70 dark:text-silver font-medium">{tech.name}</span>
         </motion.div>
       ))}
     </div>

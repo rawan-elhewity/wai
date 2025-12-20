@@ -23,7 +23,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-dark-50 dark:bg-dark border-t border-silver/10">
+    <footer className="bg-gray-100 dark:bg-dark-50 border-t border-silver/10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo & Description */}
@@ -34,7 +34,7 @@ export function Footer() {
             <p className="text-primary font-semibold text-lg mb-2">
               We Develop, You Grow
             </p>
-            <p className="text-silver text-sm leading-relaxed mb-6 max-w-sm">
+            <p className="text-navy/70 dark:text-silver text-sm leading-relaxed mb-6 max-w-sm">
               {t.footer.description}
             </p>
             <div className="flex gap-4">
@@ -45,7 +45,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.name}
-                  className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-silver hover:text-primary hover:bg-primary/20 transition-colors"
+                  className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-navy/70 dark:text-silver hover:text-primary hover:bg-primary/20 transition-colors"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -65,7 +65,7 @@ export function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-silver hover:text-primary transition-colors text-sm"
+                    className="text-navy/70 dark:text-silver hover:text-primary transition-colors text-sm"
                   >
                     {link.label}
                   </Link>
@@ -77,7 +77,7 @@ export function Footer() {
           {/* Contact Info */}
           <div>
             <h3 className="text-navy dark:text-white font-semibold mb-4">{t.footer.contactUs}</h3>
-            <ul className="space-y-3 text-sm text-silver">
+            <ul className="space-y-3 text-sm text-navy/70 dark:text-silver">
               <li className="flex items-center gap-2">
                 <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -107,7 +107,7 @@ export function Footer() {
 
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-silver/10 text-center">
-          <p className="text-silver text-sm">
+          <p className="text-navy/70 dark:text-silver text-sm">
             © {currentYear} WAI Soft. {t.footer.rights}
           </p>
         </div>

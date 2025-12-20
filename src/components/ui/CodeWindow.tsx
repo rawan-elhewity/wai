@@ -30,7 +30,7 @@ export function CodeWindow() {
           <div className="w-3 h-3 rounded-full bg-red-500" />
           <div className="w-3 h-3 rounded-full bg-yellow-500" />
           <div className="w-3 h-3 rounded-full bg-green-500" />
-          <span className="text-xs text-silver/50 ml-2">waisoft.ts</span>
+          <span className="text-xs text-navy/50 dark:text-silver/50 ml-2">waisoft.ts</span>
         </div>
 
         {/* Code content - Always LTR for code */}

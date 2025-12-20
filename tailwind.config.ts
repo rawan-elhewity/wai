@@ -24,6 +24,20 @@ const config: Config = {
           800: "#2A4A6E",
           900: "#1A3A58",
         },
+        // Cyan/Aqua - Light blue accent
+        cyan: {
+          DEFAULT: "#8DE4F2",
+          50: "#F0FBFD",
+          100: "#E1F7FB",
+          200: "#C3EFF7",
+          300: "#A5E7F3",
+          400: "#8DE4F2",
+          500: "#6DD8EA",
+          600: "#4DCCE2",
+          700: "#2DC0DA",
+          800: "#1DA8C0",
+          900: "#0D8FA6",
+        },
         // Navy
         navy: {
           DEFAULT: "#4A5578",
@@ -87,6 +101,8 @@ const config: Config = {
       },
       backgroundImage: {
         "gradient-primary": "linear-gradient(135deg, #7A9AC7 0%, #4A5578 100%)",
+        "gradient-cyan": "linear-gradient(135deg, #8DE4F2 0%, #7A9AC7 100%)",
+        "gradient-ocean": "linear-gradient(135deg, #8DE4F2 0%, #4A5578 100%)",
         "gradient-dark": "linear-gradient(135deg, #1A1A25 0%, #0A0A0F 100%)",
         "gradient-burgundy": "linear-gradient(135deg, #2D1A24 0%, #4A5578 100%)",
         "gradient-radial": "radial-gradient(ellipse at center, var(--tw-gradient-stops))",
@@ -94,6 +110,7 @@ const config: Config = {
       boxShadow: {
         glow: "0 0 20px rgba(122, 154, 199, 0.3), 0 0 40px rgba(74, 85, 120, 0.1)",
         "glow-lg": "0 0 40px rgba(122, 154, 199, 0.5), 0 0 80px rgba(74, 85, 120, 0.2)",
+        "glow-cyan": "0 0 20px rgba(141, 228, 242, 0.4), 0 0 40px rgba(141, 228, 242, 0.2)",
         glass: "0 8px 32px rgba(0, 0, 0, 0.1)",
         card: "0 4px 20px rgba(0, 0, 0, 0.08)",
         "card-hover": "0 20px 40px rgba(0, 0, 0, 0.15)",

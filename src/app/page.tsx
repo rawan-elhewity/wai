@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/Button";
 import { useLanguage, useTheme } from "@/context";
 import { FloatingOrbs } from "@/components/ui/FloatingOrbs";
 import { ParticleField } from "@/components/ui/ParticleField";
-import { CodeWindow } from "@/components/ui/CodeWindow";
 import { CountUp } from "@/components/ui/CountUp";
 import { AnimatedLogo } from "@/components/ui/AnimatedLogo";
 import { ServiceIcon, type ServiceType } from "@/components/ui/ServiceIcons";
+import { SplineScene } from "@/components/ui/splite";
 
 export default function Home() {
   const { t, locale } = useLanguage();
@@ -23,8 +23,8 @@ export default function Home() {
     offset: ["start start", "end end"],
   });
 
-  // For RTL: move from right to left (positive to negative in RTL context)
-  const aboutX = useTransform(aboutScrollProgress, [0, 1], ["0%", "66.666%"]);
+  // For horizontal scroll: move content from right to left (0% to -66.666% for 3 panels)
+  const aboutX = useTransform(aboutScrollProgress, [0, 1], ["0%", "-66.666%"]);
 
 
 
@@ -42,87 +42,21 @@ export default function Home() {
     { icon: "🤖", title: locale === "ar" ? "شات بوت ذكي" : "Smart Chatbot", category: "ai", tech: ["Python", "OpenAI"] },
   ];
 
-  const aiCapabilities = [
-    { icon: "💬", title: t.aiCapabilities?.chatbot, desc: t.aiCapabilities?.chatbotDesc, color: "from-blue-500/20 to-primary/20" },
-    { icon: "⚙️", title: t.aiCapabilities?.automation, desc: t.aiCapabilities?.automationDesc, color: "from-purple-500/20 to-pink-500/20" },
-    { icon: "📊", title: t.aiCapabilities?.analytics, desc: t.aiCapabilities?.analyticsDesc, color: "from-green-500/20 to-teal-500/20" },
-    { icon: "👁️", title: t.aiCapabilities?.vision, desc: t.aiCapabilities?.visionDesc, color: "from-orange-500/20 to-yellow-500/20" },
-  ];
-
-  // Note: These are placeholder testimonials - replace with real client feedback when available
-  const testimonials = [
-    { name: locale === "ar" ? "عميل راضٍ" : "Satisfied Client", role: locale === "ar" ? "صاحب مشروع" : "Business Owner", company: locale === "ar" ? "مشروع تجاري" : "Business Project", text: locale === "ar" ? "فكرتك غالية، واحنا عارفين قيمتها. من أول سطر في الخطة لآخر كود قبل الإطلاق، فريقنا ماسك بإيدك خطوة بخطوة." : "Your idea is valuable, and we know its worth. From the first line of the plan to the last code before launch, our team holds your hand step by step.", rating: 5 },
-    { name: locale === "ar" ? "عميل سعيد" : "Happy Client", role: locale === "ar" ? "مدير تنفيذي" : "CEO", company: locale === "ar" ? "شركة ناشئة" : "Startup", text: locale === "ar" ? "مش كل كود بيعمل فرق، لكن كل تجربة ذكية بتخلق بصمة. منتجك مش مجرد موقع أو تطبيق، ده تجربة كاملة." : "Not every code makes a difference, but every smart experience creates a mark. Your product is not just a website or app, it's a complete experience.", rating: 5 },
-    { name: locale === "ar" ? "عميل متميز" : "Premium Client", role: locale === "ar" ? "رائد أعمال" : "Entrepreneur", company: locale === "ar" ? "مؤسسة رقمية" : "Digital Enterprise", text: locale === "ar" ? "التكنولوجيا مش هدف.. دي وسيلة تساعدك تنجز أسرع وتفكر أكبر! كل نظام بنطوره معمول مخصوص علشان يخدمك." : "Technology is not a goal.. it's a tool to help you achieve faster and think bigger! Every system we develop is custom-made to serve you.", rating: 5 },
-  ];
-
   return (
-    <div className="min-h-screen overflow-hidden">
+    <div className="min-h-screen">
       <AnimatedLogo />
       <ParticleField />
 
-      {/* Logo Intro Section */}
+      {/* Logo Intro Section - Black background for AnimatedLogo */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
-        {/* Gradient glow from bottom - blue */}
-        <motion.div 
-          className="absolute inset-0"
-          animate={{
-            opacity: [0.7, 1, 0.7],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          style={{
-            background: `radial-gradient(ellipse 120% 60% at 50% 120%, rgba(59, 130, 246, 0.8) 0%, rgba(59, 130, 246, 0.4) 30%, transparent 60%)`,
-          }}
-        />
-        {/* Gradient glow from bottom - pink/magenta */}
-        <motion.div 
-          className="absolute inset-0"
-          animate={{
-            opacity: [0.8, 1, 0.8],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 0.5,
-          }}
-          style={{
-            background: `radial-gradient(ellipse 100% 50% at 30% 110%, rgba(236, 72, 153, 0.7) 0%, rgba(168, 85, 247, 0.4) 30%, transparent 55%)`,
-          }}
-        />
-        {/* Gradient glow from bottom - orange */}
-        <motion.div 
-          className="absolute inset-0"
-          animate={{
-            opacity: [0.6, 0.9, 0.6],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-          style={{
-            background: `radial-gradient(ellipse 100% 50% at 70% 110%, rgba(249, 115, 22, 0.7) 0%, rgba(234, 179, 8, 0.3) 30%, transparent 55%)`,
-          }}
-        />
-        {/* Grain texture overlay - separate layer on top */}
-        <div 
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-            opacity: 0.15,
-            mixBlendMode: "overlay",
-          }}
-        />
+        {/* Empty section - AnimatedLogo component handles the logo display */}
       </section>
 
       {/* Hero Section - Creative Centered */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        {/* Light mode radial gradient background - blue edges, white center */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_white_0%,_rgba(141,228,242,0.3)_50%,_rgba(122,154,199,0.4)_100%)] dark:bg-transparent" />
+        
         <FloatingOrbs />
         
         {/* Animated gradient background */}
@@ -166,7 +100,7 @@ export default function Home() {
           >
             <span className="text-3xl sm:text-4xl font-bold text-primary tracking-wider">WAI SOFT</span>
             <motion.p
-              className="text-silver/80 text-lg sm:text-xl md:text-2xl mt-2 tracking-wide"
+              className="text-navy/60 dark:text-silver/80 text-lg sm:text-xl md:text-2xl mt-2 tracking-wide"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
@@ -182,7 +116,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <span className="text-white">{t.hero.title}</span>{" "}
+            <span className="text-navy dark:text-white">{t.hero.title}</span>{" "}
             <motion.span 
               className="gradient-text"
               animate={{ 
@@ -207,7 +141,7 @@ export default function Home() {
 
           {/* Description */}
           <motion.p
-            className="text-base sm:text-lg text-silver/70 max-w-2xl mx-auto mb-10"
+            className="text-base sm:text-lg text-navy/60 dark:text-silver/70 max-w-2xl mx-auto mb-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -261,279 +195,212 @@ export default function Home() {
       </section>
 
       {/* About Section - Horizontal Scroll */}
-      <section ref={aboutRef} className="relative h-[200vh]">
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-          {/* Background decorations */}
-          <div className="absolute inset-0 pointer-events-none">
-            <motion.div
-              className="absolute top-20 right-10 w-72 h-72 bg-primary/10 rounded-full blur-[100px]"
-              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-              transition={{ duration: 8, repeat: Infinity }}
-            />
-            <motion.div
-              className="absolute bottom-20 left-10 w-64 h-64 bg-burgundy/10 rounded-full blur-[80px]"
-              animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
-              transition={{ duration: 10, repeat: Infinity }}
-            />
+      <section ref={aboutRef} className="relative" style={{ height: "300vh" }}>
+        <div className="sticky top-0 h-screen flex items-center overflow-hidden" style={{ direction: "ltr" }}>
+          {/* Progress indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                className="w-2 h-2 rounded-full bg-white/30"
+                style={{
+                  scale: useTransform(aboutScrollProgress, 
+                    [i * 0.33, i * 0.33 + 0.1, (i + 1) * 0.33], 
+                    [1, 1.5, 1]
+                  ),
+                  opacity: useTransform(aboutScrollProgress,
+                    [i * 0.33, i * 0.33 + 0.1, (i + 1) * 0.33],
+                    [0.3, 1, 0.3]
+                  )
+                }}
+              />
+            ))}
           </div>
 
-          <motion.div className="flex flex-row-reverse gap-16 px-8 sm:px-16" style={{ x: aboutX }}>
-            {/* Panel 1 - About Content */}
-            <div className="flex-shrink-0 w-screen h-screen flex items-center justify-center px-4">
-              <div className="max-w-2xl text-center">
-                <motion.span
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-navy/10 text-primary text-sm font-medium mb-6 border border-primary/20"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  {t.homeAbout?.badge || "من نحن"}
-                </motion.span>
+          <motion.div 
+            className="flex" 
+            style={{ x: aboutX, width: "300vw" }}
+          >
+            {/* Panel 1 - About Content with Spline Robot */}
+            <div className="w-screen h-screen relative bg-gradient-to-b from-gray-100 to-white dark:from-dark-100 dark:to-dark-50" style={{ flexShrink: 0, direction: "rtl" }}>
+              {/* Content */}
+              <div className="h-full flex">
+                {/* Robot - Left Side (Full Height) */}
+                <div className="w-1/2 h-full">
+                  <SplineScene 
+                    scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                    className="w-full h-full"
+                  />
+                </div>
 
-                <motion.h2
-                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-navy dark:text-white mb-6 leading-tight"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.1 }}
-                >
-                  {t.homeAbout?.title || "شريكك التقني نحو المستقبل"}
-                </motion.h2>
-
-                <motion.p
-                  className="text-silver text-base sm:text-lg mb-8 leading-relaxed"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 }}
-                >
-                  {t.homeAbout?.description ||
-                    "WAI Soft شركة سعودية متخصصة في تطوير البرمجيات وحلول الذكاء الاصطناعي."}
-                </motion.p>
-
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5 }}
-                >
-                  <Link
-                    href="/about"
-                    className="group inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-primary/10 to-navy/10 text-primary font-medium border border-primary/20 hover:border-primary/40 hover:bg-primary/20 transition-all"
-                  >
-                    {t.common.learnMore}
-                    <motion.span animate={{ x: [0, -5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
-                      ←
+                {/* Text Content - Right Side */}
+                <div className="w-1/2 h-full flex items-center justify-center px-8">
+                  <div className="text-center lg:text-right max-w-lg">
+                    <motion.span
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-base font-medium mb-5 border border-primary/30 backdrop-blur-sm"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                    >
+                      <motion.span 
+                        className="w-2 h-2 rounded-full bg-primary"
+                        animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                      {t.homeAbout?.badge || "من نحن"}
                     </motion.span>
-                  </Link>
-                </motion.div>
+
+                    <motion.h2
+                      className="text-3xl sm:text-4xl lg:text-5xl font-bold text-navy dark:text-white mb-4 leading-tight"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.1 }}
+                    >
+                      {t.homeAbout?.title || "شريكك التقني نحو المستقبل"}
+                    </motion.h2>
+
+                    <motion.p
+                      className="text-navy/70 dark:text-silver text-base sm:text-lg mb-6 leading-relaxed"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      {t.homeAbout?.description ||
+                        "WAI Soft شركة متخصصة في تطوير البرمجيات وحلول الذكاء الاصطناعي."}
+                    </motion.p>
+
+                    <motion.div
+                      className="flex flex-wrap gap-3 justify-center lg:justify-start"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.3 }}
+                    >
+                      <Link
+                        href="/about"
+                        className="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-primary to-navy text-white font-medium hover:shadow-glow transition-all text-sm"
+                      >
+                        {t.common.learnMore}
+                        <motion.span animate={{ x: [0, -5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                          ←
+                        </motion.span>
+                      </Link>
+                      <Link
+                        href="/contact"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-navy/5 dark:bg-white/10 text-navy dark:text-white font-medium border border-navy/10 dark:border-white/20 hover:border-primary/40 hover:bg-navy/10 dark:hover:bg-white/20 transition-all text-sm"
+                      >
+                        {locale === "ar" ? "تواصل معنا" : "Contact Us"}
+                      </Link>
+                    </motion.div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Panel 2 - Features */}
-            <div className="flex-shrink-0 w-screen h-screen flex items-center justify-center px-4">
-              <div className="max-w-xl">
-                <h3 className="text-2xl sm:text-3xl font-bold text-white mb-10 text-center">
-                  {locale === "ar" ? "لماذا نحن مميزون؟" : "Why We're Different"}
-                </h3>
-                <div className="space-y-6">
+            {/* Panel 2 - Features Grid */}
+            <div className="w-screen h-screen flex items-center justify-center px-4 sm:px-8 bg-gradient-to-b from-gray-100 to-white dark:from-dark-100 dark:to-dark-50" style={{ flexShrink: 0, direction: "rtl" }}>
+              <div className="flex flex-col items-center justify-center">
+                <motion.div className="text-center mb-10">
+                  <motion.span
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 text-base font-medium mb-5 border border-green-500/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                  >
+                    ✨ {locale === "ar" ? "مميزاتنا" : "Our Features"}
+                  </motion.span>
+                  <h3 className="text-4xl sm:text-5xl font-bold text-navy dark:text-white">
+                    {locale === "ar" ? "لماذا نحن مميزون؟" : "Why We're Different"}
+                  </h3>
+                </motion.div>
+
+                <div className="grid grid-cols-3 sm:grid-cols-6 gap-5">
                   {[
-                    { icon: "🚀", text: locale === "ar" ? "تقنيات حديثة ومتطورة" : "Modern & Advanced Technologies" },
-                    { icon: "💡", text: locale === "ar" ? "حلول مبتكرة ومخصصة" : "Innovative & Custom Solutions" },
-                    { icon: "🛡️", text: locale === "ar" ? "أمان وجودة عالية" : "High Security & Quality" },
-                    { icon: "⚡", text: locale === "ar" ? "سرعة في التنفيذ" : "Fast Delivery" },
-                    { icon: "🤝", text: locale === "ar" ? "دعم فني متواصل" : "Continuous Support" },
+                    { icon: "🚀", title: locale === "ar" ? "تقنيات حديثة" : "Modern Tech", desc: locale === "ar" ? "نستخدم أحدث التقنيات" : "Latest technologies", color: "from-blue-500/20 to-cyan-500/20" },
+                    { icon: "💡", title: locale === "ar" ? "حلول مبتكرة" : "Innovative", desc: locale === "ar" ? "أفكار إبداعية مخصصة" : "Creative custom ideas", color: "from-yellow-500/20 to-orange-500/20" },
+                    { icon: "🛡️", title: locale === "ar" ? "أمان عالي" : "High Security", desc: locale === "ar" ? "حماية بيانات متقدمة" : "Advanced data protection", color: "from-green-500/20 to-emerald-500/20" },
+                    { icon: "⚡", title: locale === "ar" ? "سرعة التنفيذ" : "Fast Delivery", desc: locale === "ar" ? "إنجاز في الوقت المحدد" : "On-time completion", color: "from-purple-500/20 to-pink-500/20" },
+                    { icon: "🤝", title: locale === "ar" ? "دعم متواصل" : "24/7 Support", desc: locale === "ar" ? "فريق دعم متاح دائماً" : "Always available team", color: "from-red-500/20 to-rose-500/20" },
+                    { icon: "🎯", title: locale === "ar" ? "جودة عالية" : "High Quality", desc: locale === "ar" ? "معايير جودة صارمة" : "Strict quality standards", color: "from-indigo-500/20 to-violet-500/20" },
                   ].map((feature, i) => (
                     <motion.div
                       key={i}
-                      className="flex items-center gap-4 group p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all"
-                      initial={{ opacity: 0, x: 50 }}
-                      whileInView={{ opacity: 1, x: 0 }}
+                      className="group relative p-5 rounded-2xl bg-navy/5 dark:bg-white/5 border border-navy/10 dark:border-white/10 hover:border-primary/30 transition-all overflow-hidden min-w-[140px]"
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
+                      transition={{ delay: i * 0.05 }}
+                      whileHover={{ y: -3, scale: 1.02 }}
                     >
-                      <span className="flex-shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-navy/10 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                        {feature.icon}
-                      </span>
-                      <span className="text-silver text-lg group-hover:text-white transition-colors">{feature.text}</span>
+                      <motion.div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                      <div className="relative z-10 text-center">
+                        <motion.span 
+                          className="inline-flex w-14 h-14 rounded-xl bg-navy/10 dark:bg-white/10 items-center justify-center text-2xl mb-3"
+                          whileHover={{ scale: 1.2, rotate: 10 }}
+                        >
+                          {feature.icon}
+                        </motion.span>
+                        <h4 className="text-base font-bold text-navy dark:text-white mb-1">{feature.title}</h4>
+                        <p className="text-navy/70 dark:text-silver text-sm">{feature.desc}</p>
+                      </div>
                     </motion.div>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Panel 3 - Stats & Code */}
-            <div className="flex-shrink-0 w-screen h-screen flex items-center justify-center px-4">
-              <div className="max-w-2xl w-full space-y-8">
+            {/* Panel 3 - Stats */}
+            <div className="w-screen h-screen flex items-center justify-center px-4 sm:px-8 bg-gradient-to-b from-gray-100 to-white dark:from-dark-100 dark:to-dark-50" style={{ flexShrink: 0, direction: "rtl" }}>
+              <div className="flex flex-col items-center justify-center">
+                <motion.div className="text-center mb-10">
+                  <motion.span
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-base font-medium mb-5 border border-primary/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                  >
+                    📊 {locale === "ar" ? "إنجازاتنا" : "Our Achievements"}
+                  </motion.span>
+                  <h3 className="text-4xl sm:text-5xl font-bold text-navy dark:text-white">
+                    {locale === "ar" ? "أرقام نفخر بها" : "Numbers We're Proud Of"}
+                  </h3>
+                </motion.div>
+
                 {/* Stats Grid */}
-                <div className="grid grid-cols-3 gap-4 sm:gap-6">
+                <div className="grid grid-cols-3 gap-6">
                   {[
-                    { value: 15, suffix: "+", label: t.homeAbout?.experience || "سنوات من الخبرة", icon: "📅", color: "from-blue-500/20 to-cyan-500/20" },
-                    { value: 50, suffix: "+", label: t.homeAbout?.projects || "مشروع ناجح", icon: "🎯", color: "from-purple-500/20 to-pink-500/20" },
-                    { value: 40, suffix: "+", label: t.homeAbout?.clients || "عميل راضٍ", icon: "😊", color: "from-green-500/20 to-emerald-500/20" },
+                    { value: 15, suffix: "+", label: t.homeAbout?.experience || "سنوات من الخبرة", icon: "📅", color: "from-blue-500 to-cyan-500" },
+                    { value: 50, suffix: "+", label: t.homeAbout?.projects || "مشروع ناجح", icon: "🎯", color: "from-purple-500 to-pink-500" },
+                    { value: 40, suffix: "+", label: t.homeAbout?.clients || "عميل راضٍ", icon: "😊", color: "from-green-500 to-emerald-500" },
                   ].map((stat, i) => (
                     <motion.div
                       key={i}
-                      className="group relative text-center p-6 rounded-2xl bg-dark-50/80 backdrop-blur-sm border border-white/5 overflow-hidden"
+                      className="group relative text-center p-8 rounded-2xl bg-navy/5 dark:bg-white/5 backdrop-blur-sm border border-navy/10 dark:border-white/10 overflow-hidden min-w-[160px]"
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.2 + i * 0.1 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                     >
-                      <motion.div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                      <motion.div className="relative z-10 text-3xl sm:text-4xl mb-3" whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }} transition={{ duration: 0.4 }}>
+                      <motion.div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
+                      <motion.div 
+                        className="relative z-10 text-4xl mb-4" 
+                        whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }} 
+                        transition={{ duration: 0.4 }}
+                      >
                         {stat.icon}
                       </motion.div>
                       <div className="relative z-10">
-                        <CountUp end={stat.value} suffix={stat.suffix} className="text-3xl sm:text-4xl font-bold text-white" />
-                        <p className="text-silver/80 text-xs sm:text-sm mt-2">{stat.label}</p>
+                        <CountUp end={stat.value} suffix={stat.suffix} className="text-4xl sm:text-5xl font-bold text-navy dark:text-white" />
+                        <p className="text-navy/70 dark:text-silver text-base mt-3">{stat.label}</p>
                       </div>
                     </motion.div>
                   ))}
                 </div>
-
-                {/* Code Window */}
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.3 }} className="relative">
-                  <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 via-transparent to-burgundy/20 rounded-3xl blur-2xl opacity-50" />
-                  <div className="relative">
-                    <CodeWindow />
-                  </div>
-                </motion.div>
               </div>
             </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Services Section - Enhanced Cards */}
-      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-dark-100/50 to-transparent" />
-        
-        <div className="relative max-w-6xl mx-auto">
-          <motion.div className="text-center mb-20" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <motion.span 
-              className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20"
-              whileHover={{ scale: 1.05 }}
-            >
-              {t.services.badge}
-            </motion.span>
-            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">{t.services.title}</h2>
-            <p className="text-silver max-w-xl mx-auto text-lg">{t.services.subtitle}</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, i) => (
-              <motion.div
-                key={i}
-                className="group relative p-8 rounded-3xl bg-white/5 dark:bg-dark-50/50 border border-silver/10 overflow-hidden"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -10, borderColor: "rgba(122,154,199,0.3)" }}
-              >
-                {/* Gradient overlay on hover */}
-                <motion.div 
-                  className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                />
-                
-                {/* Icon with glow */}
-                <motion.div 
-                  className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center mb-6 border border-white/10"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                >
-                  <ServiceIcon type={service.iconType} className="w-8 h-8 text-primary" />
-                  <motion.div
-                    className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${service.gradient} blur-xl opacity-0 group-hover:opacity-50 transition-opacity`}
-                  />
-                </motion.div>
-
-                <h3 className="relative z-10 text-2xl font-bold text-navy dark:text-white mb-3">{service.title}</h3>
-                <p className="relative z-10 text-silver leading-relaxed">{service.desc}</p>
-
-                {/* Arrow indicator */}
-                <motion.div 
-                  className="absolute bottom-8 left-8 text-primary opacity-0 group-hover:opacity-100 transition-opacity"
-                  animate={{ x: [0, -5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  ←
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Projects Section - Enhanced */}
-      <section className="relative py-28 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div className="text-center mb-20" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20">
-              {t.homeProjects?.badge || "أعمالنا"}
-            </motion.span>
-            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">{t.homeProjects?.title || "مشاريع نفخر بها"}</h2>
-            <p className="text-silver max-w-xl mx-auto text-lg">{t.homeProjects?.subtitle}</p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {featuredProjects.map((project, i) => (
-              <motion.div
-                key={i}
-                className="group relative rounded-3xl overflow-hidden"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                whileHover={{ y: -10 }}
-              >
-                {/* Card background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-dark-50 to-dark-100 border border-silver/10 group-hover:border-primary/30 transition-colors rounded-3xl" />
-                
-                {/* Glow effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"
-                />
-
-                <div className="relative p-8">
-                  {/* Category badge */}
-                  <div className="absolute top-6 left-6 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-medium">
-                    {project.category === "web" ? "🌐 Web" : project.category === "mobile" ? "📱 Mobile" : "🤖 AI"}
-                  </div>
-
-                  {/* Icon */}
-                  <motion.div 
-                    className="text-7xl mb-6 mt-8"
-                    whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    {project.icon}
-                  </motion.div>
-
-                  <h3 className="text-xl font-bold text-white mb-4">{project.title}</h3>
-
-                  {/* Tech stack */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech, j) => (
-                      <span key={j} className="px-2 py-1 rounded-full bg-white/5 text-silver text-xs border border-white/10">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div 
-            className="text-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
-            <Button href="/projects" variant="outline" size="lg">{t.homeProjects?.viewAll || "عرض جميع المشاريع"}</Button>
           </motion.div>
         </div>
       </section>
@@ -595,128 +462,293 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Capabilities Section - Enhanced */}
-      <section className="relative py-28 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
+      {/* Services Section - Enhanced Cards */}
+      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-cyan/5 via-transparent to-primary/5 dark:from-dark-100/50 dark:via-transparent dark:to-transparent" />
+        
+        <div className="relative max-w-6xl mx-auto">
           <motion.div className="text-center mb-20" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <motion.span 
-              className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 text-green-400 text-sm font-medium mb-6 border border-green-500/20"
-              animate={{ boxShadow: ["0 0 0 0 rgba(34,197,94,0)", "0 0 0 10px rgba(34,197,94,0)"] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan/20 to-primary/20 dark:from-primary/20 dark:to-navy/20 text-cyan-700 dark:text-primary text-sm font-medium mb-6 border border-cyan/30 dark:border-primary/20"
+              whileHover={{ scale: 1.05 }}
             >
-              🧠 {t.aiCapabilities?.badge || "الذكاء الاصطناعي"}
+              {t.services.badge}
             </motion.span>
-            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">{t.aiCapabilities?.title}</h2>
-            <p className="text-silver max-w-xl mx-auto text-lg">{t.aiCapabilities?.subtitle}</p>
+            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">{t.services.title}</h2>
+            <p className="text-navy/70 dark:text-silver max-w-xl mx-auto text-lg">{t.services.subtitle}</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {aiCapabilities.map((cap, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((service, i) => (
               <motion.div
                 key={i}
-                className="group relative p-6 rounded-3xl bg-white/5 dark:bg-dark-50/50 border border-silver/10 overflow-hidden"
-                initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                className="group relative p-8 rounded-3xl bg-white dark:bg-dark-50/50 border border-cyan/20 dark:border-silver/10 overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -10, borderColor: "rgba(34,197,94,0.3)" }}
+                whileHover={{ y: -10, borderColor: "rgba(141,228,242,0.5)" }}
               >
-                {/* Gradient background */}
-                <motion.div className={`absolute inset-0 bg-gradient-to-br ${cap.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-
-                <div className="relative z-10 text-center">
-                  <motion.div
-                    className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 flex items-center justify-center text-4xl border border-green-500/20"
-                    whileHover={{ scale: 1.1, rotate: 10 }}
-                  >
-                    {cap.icon}
-                  </motion.div>
-                  <h3 className="text-lg font-bold text-navy dark:text-white mb-3">{cap.title}</h3>
-                  <p className="text-silver text-sm leading-relaxed">{cap.desc}</p>
-                </div>
-
-                {/* Pulse effect */}
-                <motion.div
-                  className="absolute top-6 right-6 w-2 h-2 rounded-full bg-green-500"
-                  animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
+                {/* Gradient overlay on hover */}
+                <motion.div 
+                  className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
                 />
+                
+                {/* Icon with glow */}
+                <motion.div 
+                  className="relative z-10 w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan/20 to-primary/20 dark:from-white/10 dark:to-white/5 flex items-center justify-center mb-6 border border-cyan/30 dark:border-white/10"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                >
+                  <ServiceIcon type={service.iconType} className="w-8 h-8 text-cyan-600 dark:text-primary" />
+                  <motion.div
+                    className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${service.gradient} blur-xl opacity-0 group-hover:opacity-50 transition-opacity`}
+                  />
+                </motion.div>
+
+                <h3 className="relative z-10 text-2xl font-bold text-navy dark:text-white mb-3">{service.title}</h3>
+                <p className="relative z-10 text-navy/70 dark:text-silver leading-relaxed">{service.desc}</p>
+
+                {/* Arrow indicator */}
+                <motion.div 
+                  className="absolute bottom-8 left-8 text-cyan-600 dark:text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                  animate={{ x: [0, -5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  ←
+                </motion.div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section - Enhanced */}
-      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-dark-100/50 to-transparent" />
-        
-        <div className="relative max-w-6xl mx-auto">
+      {/* Projects Section - Enhanced */}
+      <section className="relative py-28 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto">
           <motion.div className="text-center mb-20" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-yellow-500/20 to-orange-500/20 text-yellow-400 text-sm font-medium mb-6 border border-yellow-500/20">
-              ⭐ {t.testimonials?.badge || "آراء العملاء"}
+            <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20">
+              {t.homeProjects?.badge || "أعمالنا"}
             </motion.span>
-            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">{t.testimonials?.title}</h2>
-            <p className="text-silver max-w-xl mx-auto text-lg">{t.testimonials?.subtitle}</p>
+            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">{t.homeProjects?.title || "مشاريع نفخر بها"}</h2>
+            <p className="text-navy/70 dark:text-silver max-w-xl mx-auto text-lg">{t.homeProjects?.subtitle}</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {featuredProjects.map((project, i) => (
               <motion.div
                 key={i}
-                className="group relative p-8 rounded-3xl bg-white/5 dark:bg-dark-50/50 border border-silver/10"
+                className="group relative rounded-3xl overflow-hidden"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15 }}
-                whileHover={{ y: -5, borderColor: "rgba(122,154,199,0.3)" }}
+                whileHover={{ y: -10 }}
               >
-                {/* Quote icon */}
-                <div className="absolute top-6 right-6 text-4xl text-primary/20">"</div>
+                {/* Card background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-dark-50 dark:to-dark-100 border border-silver/10 group-hover:border-primary/30 transition-colors rounded-3xl" />
+                
+                {/* Glow effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl"
+                />
 
-                {/* Stars */}
-                <div className="flex gap-1 mb-6">
-                  {[...Array(testimonial.rating)].map((_, j) => (
-                    <motion.span 
-                      key={j} 
-                      className="text-yellow-500 text-xl"
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.15 + j * 0.1 }}
-                    >
-                      ⭐
-                    </motion.span>
-                  ))}
-                </div>
+                <div className="relative p-8">
+                  {/* Category badge */}
+                  <div className="absolute top-6 left-6 px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-medium">
+                    {project.category === "web" ? "🌐 Web" : project.category === "mobile" ? "📱 Mobile" : "🤖 AI"}
+                  </div>
 
-                <p className="text-silver mb-8 leading-relaxed italic">&quot;{testimonial.text}&quot;</p>
-
-                <div className="flex items-center gap-4">
+                  {/* Icon */}
                   <motion.div 
-                    className="relative w-14 h-14 rounded-full bg-gradient-to-br from-primary to-navy p-0.5"
-                    whileHover={{ scale: 1.1 }}
+                    className="text-7xl mb-6 mt-8"
+                    whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
+                    transition={{ duration: 0.5 }}
                   >
-                    <div className="w-full h-full rounded-full bg-dark-50 flex items-center justify-center">
-                      <svg className="w-7 h-7 text-primary/60" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                      </svg>
-                    </div>
-                    <motion.div 
-                      className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-green-500 border-2 border-dark-50"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
+                    {project.icon}
                   </motion.div>
-                  <div>
-                    <p className="font-bold text-navy dark:text-white">{testimonial.name}</p>
-                    <p className="text-silver text-sm">{testimonial.role}</p>
-                    <p className="text-primary text-xs">{testimonial.company}</p>
+
+                  <h3 className="text-xl font-bold text-navy dark:text-white mb-4">{project.title}</h3>
+
+                  {/* Tech stack */}
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech, j) => (
+                      <span key={j} className="px-2 py-1 rounded-full bg-navy/5 dark:bg-white/5 text-navy/70 dark:text-silver text-xs border border-navy/10 dark:border-white/10">
+                        {tech}
+                      </span>
+                    ))}
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
+
+          <motion.div 
+            className="text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <Button href="/projects" variant="outline" size="lg">{t.homeProjects?.viewAll || "عرض جميع المشاريع"}</Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Technologies We Use Section */}
+      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-100/30 dark:via-dark-100/30 to-transparent" />
+        
+        <div className="relative max-w-6xl mx-auto">
+          <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <motion.span 
+              className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-6 border border-cyan-500/20"
+            >
+              💻 {locale === "ar" ? "التقنيات" : "Technologies"}
+            </motion.span>
+            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
+              {locale === "ar" ? "التقنيات التي نستخدمها" : "Technologies We Use"}
+            </h2>
+            <p className="text-navy/70 dark:text-silver max-w-xl mx-auto text-lg">
+              {locale === "ar" ? "نستخدم أحدث التقنيات لبناء حلول متطورة وموثوقة" : "We use cutting-edge technologies to build advanced and reliable solutions"}
+            </p>
+          </motion.div>
+
+          {/* Tech Categories */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                category: locale === "ar" ? "الواجهة الأمامية" : "Frontend",
+                icon: "🎨",
+                color: "from-blue-500/20 to-cyan-500/20",
+                borderColor: "border-blue-500/20",
+                techs: ["React", "Next.js", "Vue.js", "TypeScript", "Tailwind CSS"]
+              },
+              {
+                category: locale === "ar" ? "الواجهة الخلفية" : "Backend",
+                icon: "⚙️",
+                color: "from-green-500/20 to-emerald-500/20",
+                borderColor: "border-green-500/20",
+                techs: ["Node.js", "Python", "Django", "Express", "GraphQL"]
+              },
+              {
+                category: locale === "ar" ? "الموبايل" : "Mobile",
+                icon: "📱",
+                color: "from-purple-500/20 to-pink-500/20",
+                borderColor: "border-purple-500/20",
+                techs: ["React Native", "Flutter", "Swift", "Kotlin"]
+              },
+              {
+                category: locale === "ar" ? "السحابة وقواعد البيانات" : "Cloud & Database",
+                icon: "☁️",
+                color: "from-orange-500/20 to-yellow-500/20",
+                borderColor: "border-orange-500/20",
+                techs: ["AWS", "Firebase", "MongoDB", "PostgreSQL", "Docker"]
+              }
+            ].map((cat, i) => (
+              <motion.div
+                key={i}
+                className={`group relative p-6 rounded-3xl bg-white dark:bg-dark-50/50 border ${cat.borderColor} overflow-hidden shadow-sm`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ y: -5 }}
+              >
+                <motion.div className={`absolute inset-0 bg-gradient-to-br ${cat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-3xl">{cat.icon}</span>
+                    <h3 className="text-lg font-bold text-navy dark:text-white">{cat.category}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {cat.techs.map((tech, j) => (
+                      <motion.span
+                        key={j}
+                        className="px-3 py-1.5 rounded-full bg-navy/10 dark:bg-white/10 text-navy dark:text-silver text-sm border border-navy/10 dark:border-white/10 hover:border-primary/30 hover:text-primary transition-all"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.1 + j * 0.05 }}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {tech}
+                      </motion.span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
+        <div className="relative max-w-6xl mx-auto">
+          <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <motion.span 
+              className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20"
+            >
+              🤝 {locale === "ar" ? "شركاؤنا" : "Partners"}
+            </motion.span>
+            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
+              {locale === "ar" ? "شركاء النجاح" : "Our Partners"}
+            </h2>
+            <p className="text-navy/70 dark:text-silver max-w-xl mx-auto text-lg">
+              {locale === "ar" ? "نفخر بالتعاون مع أفضل الشركات والمؤسسات" : "We're proud to collaborate with leading companies and organizations"}
+            </p>
+          </motion.div>
+
+          {/* Partners Marquee */}
+          <div className="relative overflow-hidden py-8 group">
+            {/* Gradient overlays */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white dark:from-dark-100 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-dark-100 to-transparent z-10 pointer-events-none" />
+            
+            <div className="flex animate-marquee group-hover:[animation-play-state:paused]">
+              {[...Array(2)].map((_, setIndex) => (
+                <div key={setIndex} className="flex items-center shrink-0 pr-6">
+                  {[
+                    { name: "Google Cloud", icon: "☁️" },
+                    { name: "AWS", icon: "🔶" },
+                    { name: "Microsoft", icon: "🪟" },
+                    { name: "Meta", icon: "Ⓜ️" },
+                    { name: "OpenAI", icon: "🤖" },
+                    { name: "Stripe", icon: "💳" },
+                    { name: "Vercel", icon: "▲" },
+                    { name: "GitHub", icon: "🐙" },
+                  ].map((partner, i) => (
+                    <div
+                      key={`${setIndex}-${i}`}
+                      className="flex items-center gap-3 px-6 py-4 mx-3 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-primary/30 hover:scale-105 transition-all shrink-0 shadow-sm"
+                    >
+                      <span className="text-2xl">{partner.icon}</span>
+                      <span className="text-navy dark:text-white font-medium whitespace-nowrap">{partner.name}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Trust badges */}
+          <motion.div 
+            className="flex flex-wrap justify-center gap-6 mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {[
+              { label: locale === "ar" ? "شريك معتمد" : "Certified Partner", icon: "✓" },
+              { label: locale === "ar" ? "دعم 24/7" : "24/7 Support", icon: "🕐" },
+              { label: locale === "ar" ? "أمان عالي" : "High Security", icon: "🔒" },
+            ].map((badge, i) => (
+              <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
+                <span className="text-primary">{badge.icon}</span>
+                <span className="text-navy/70 dark:text-silver text-sm">{badge.label}</span>
+              </div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
@@ -767,7 +799,7 @@ export default function Home() {
                 🚀
               </motion.span>
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white mb-4 sm:mb-6">{t.cta.title}</h2>
-              <p className="text-silver text-base sm:text-lg mb-8 sm:mb-10 max-w-xl mx-auto">{t.cta.subtitle}</p>
+              <p className="text-white/70 text-base sm:text-lg mb-8 sm:mb-10 max-w-xl mx-auto">{t.cta.subtitle}</p>
               <Button href="/contact" size="lg" className="px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg shadow-glow hover:shadow-glow-lg transition-shadow">
                 {t.cta.button}
                 <motion.span className="inline-block mr-2" animate={{ x: [0, -5, 0] }} transition={{ duration: 1, repeat: Infinity }}>←</motion.span>

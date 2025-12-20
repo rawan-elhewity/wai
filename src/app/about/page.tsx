@@ -75,7 +75,7 @@ export default function AboutPage() {
           </motion.p>
           
           <motion.p
-            className="text-lg sm:text-xl text-silver max-w-2xl mx-auto mb-12"
+            className="text-lg sm:text-xl text-navy/70 dark:text-silver max-w-2xl mx-auto mb-12"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
@@ -93,7 +93,7 @@ export default function AboutPage() {
             {stats.map((stat, i) => (
               <motion.div
                 key={i}
-                className="group relative p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden"
+                className="group relative p-6 rounded-2xl bg-white dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 overflow-hidden shadow-sm"
                 whileHover={{ scale: 1.05, y: -5 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
@@ -102,8 +102,8 @@ export default function AboutPage() {
                 />
                 <div className="relative z-10 text-center">
                   <span className="text-2xl mb-2 block">{stat.icon}</span>
-                  <CountUp end={stat.value} suffix={stat.suffix} className="text-3xl font-bold text-white" />
-                  <p className="text-silver text-sm mt-1">{stat.label}</p>
+                  <CountUp end={stat.value} suffix={stat.suffix} className="text-3xl font-bold text-navy dark:text-white" />
+                  <p className="text-navy/70 dark:text-silver text-sm mt-1">{stat.label}</p>
                 </div>
               </motion.div>
             ))}
@@ -131,7 +131,7 @@ export default function AboutPage() {
                 {locale === "ar" ? "15 عاماً من الابتكار والتميز" : "15 Years of Innovation & Excellence"}
               </h2>
               
-              <p className="text-silver mb-8 leading-relaxed text-lg">{t.about.storyText}</p>
+              <p className="text-navy/70 dark:text-silver mb-8 leading-relaxed text-lg">{t.about.storyText}</p>
               
               <motion.div 
                 className="p-6 rounded-2xl bg-gradient-to-r from-primary via-navy to-burgundy relative overflow-hidden"
@@ -170,7 +170,7 @@ export default function AboutPage() {
                 />
                 
                 <motion.div 
-                  className="relative text-center p-16 rounded-full bg-gradient-to-br from-dark-50 to-dark-100 border border-white/10"
+                  className="relative text-center p-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-dark-50 dark:to-dark-100 border border-gray-200 dark:border-white/10"
                   whileHover={{ rotate: 5 }}
                   transition={{ type: "spring" }}
                 >
@@ -190,7 +190,7 @@ export default function AboutPage() {
                     =
                   </motion.p>
                   <p className="text-5xl font-bold text-white mt-2">WAY</p>
-                  <p className="text-silver text-sm mt-4">{locale === "ar" ? "طريقك للمستقبل" : "Your Way to Future"}</p>
+                  <p className="text-navy/70 dark:text-silver text-sm mt-4">{locale === "ar" ? "طريقك للمستقبل" : "Your Way to Future"}</p>
                 </motion.div>
               </div>
             </motion.div>
@@ -235,7 +235,7 @@ export default function AboutPage() {
               transition={{ delay: 0.1 }}
               whileHover={{ y: -10 }}
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-dark-50 to-dark-100 border border-white/10" />
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-dark-50 dark:to-dark-100 border border-gray-200 dark:border-white/10" />
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
               />
@@ -246,8 +246,8 @@ export default function AboutPage() {
                 >
                   👁️
                 </motion.span>
-                <h3 className="text-3xl font-bold text-white mb-4">{t.about.vision}</h3>
-                <p className="text-silver text-lg leading-relaxed">{t.about.visionText}</p>
+                <h3 className="text-3xl font-bold text-navy dark:text-white mb-4">{t.about.vision}</h3>
+                <p className="text-navy/70 dark:text-silver text-lg leading-relaxed">{t.about.visionText}</p>
               </div>
             </motion.div>
           </div>
@@ -275,7 +275,7 @@ export default function AboutPage() {
             {values.map((value, i) => (
               <motion.div
                 key={i}
-                className="group relative text-center p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden"
+                className="group relative text-center p-8 rounded-3xl bg-white dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 overflow-hidden shadow-sm"
                 initial={{ opacity: 0, y: 30, scale: 0.9 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
@@ -297,7 +297,7 @@ export default function AboutPage() {
                 <h3 className="relative z-10 text-xl font-bold text-navy dark:text-white mb-3">
                   {value.title}
                 </h3>
-                <p className="relative z-10 text-silver text-sm leading-relaxed">{value.desc}</p>
+                <p className="relative z-10 text-navy/70 dark:text-silver text-sm leading-relaxed">{value.desc}</p>
                 
                 {/* Shine effect */}
                 <motion.div
@@ -311,7 +311,7 @@ export default function AboutPage() {
 
       {/* Timeline Section - Enhanced */}
       <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-dark-100/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-100/50 dark:from-dark-100/50 to-transparent" />
         
         <div className="relative max-w-6xl mx-auto">
           <motion.div 
@@ -352,13 +352,13 @@ export default function AboutPage() {
                   {/* Content */}
                   <div className={`flex-1 ${i % 2 === 0 ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12'}`}>
                     <motion.div
-                      className="group p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-primary/30 transition-colors"
+                      className="group p-6 rounded-2xl bg-white dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 hover:border-primary/30 transition-colors shadow-sm"
                       whileHover={{ scale: 1.02, y: -5 }}
                     >
                       <span className="text-3xl mb-3 block">{item.icon}</span>
                       <div className="text-4xl font-bold text-primary mb-2">{item.year}</div>
-                      <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                      <p className="text-silver">{item.desc}</p>
+                      <h3 className="text-xl font-bold text-navy dark:text-white mb-2">{item.title}</h3>
+                      <p className="text-navy/70 dark:text-silver">{item.desc}</p>
                     </motion.div>
                   </div>
                   
@@ -394,7 +394,7 @@ export default function AboutPage() {
             <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
               {t.about.team}
             </h2>
-            <p className="text-silver max-w-xl mx-auto">
+            <p className="text-navy/70 dark:text-silver max-w-xl mx-auto">
               {locale === "ar" ? "فريق من المحترفين الشغوفين بالتكنولوجيا والابتكار" : "A team of professionals passionate about technology and innovation"}
             </p>
           </motion.div>
@@ -410,7 +410,7 @@ export default function AboutPage() {
                 transition={{ delay: i * 0.15 }}
               >
                 <motion.div
-                  className="relative p-8 rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 overflow-hidden"
+                  className="relative p-8 rounded-3xl bg-white dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 overflow-hidden shadow-sm"
                   whileHover={{ y: -10, borderColor: "rgba(122,154,199,0.3)" }}
                 >
                   {/* Gradient overlay */}
@@ -423,7 +423,7 @@ export default function AboutPage() {
                     className="relative w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary via-navy to-burgundy p-1"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                   >
-                    <div className="w-full h-full rounded-full bg-dark-50 flex items-center justify-center overflow-hidden">
+                    <div className="w-full h-full rounded-full bg-white dark:bg-dark-50 flex items-center justify-center overflow-hidden">
                       <motion.span 
                         className="text-5xl"
                         animate={{ y: [0, -5, 0] }}
@@ -435,13 +435,13 @@ export default function AboutPage() {
                     
                     {/* Online indicator */}
                     <motion.div 
-                      className="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-green-500 border-2 border-dark-50"
+                      className="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-green-500 border-2 border-white dark:border-dark-50"
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     />
                   </motion.div>
                   
-                  <h3 className="relative z-10 text-xl font-bold text-white mb-2">
+                  <h3 className="relative z-10 text-xl font-bold text-navy dark:text-white mb-2">
                     {locale === "ar" ? member.name : member.nameEn}
                   </h3>
                   <p className="relative z-10 text-primary font-medium mb-4">
@@ -454,7 +454,7 @@ export default function AboutPage() {
                       href={member.social.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-silver hover:text-primary hover:bg-primary/20 transition-colors"
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-navy/10 dark:bg-white/10 text-navy/70 dark:text-silver hover:text-primary hover:bg-primary/20 transition-colors"
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.95 }}
                     >
