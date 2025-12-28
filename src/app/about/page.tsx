@@ -6,6 +6,8 @@ import { team } from "@/data/team";
 import { useRef } from "react";
 import { FloatingOrbs } from "@/components/ui/FloatingOrbs";
 import { CountUp } from "@/components/ui/CountUp";
+import { TeamSection } from "@/components/ui/team-section";
+import { Linkedin } from "lucide-react";
 
 export default function AboutPage() {
   const { t, locale } = useLanguage();
@@ -379,101 +381,22 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section - Enhanced */}
-      <section className="relative py-28 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div 
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <motion.span className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20">
-              {locale === "ar" ? "فريق العمل" : "Our Team"}
-            </motion.span>
-            <h2 className="text-3xl sm:text-5xl font-bold text-navy dark:text-white mb-4">
-              {t.about.team}
-            </h2>
-            <p className="text-navy/70 dark:text-silver max-w-xl mx-auto">
-              {locale === "ar" ? "فريق من المحترفين الشغوفين بالتكنولوجيا والابتكار" : "A team of professionals passionate about technology and innovation"}
-            </p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member, i) => (
-              <motion.div
-                key={member.id}
-                className="group relative text-center"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-              >
-                <motion.div
-                  className="relative p-8 rounded-3xl bg-white dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 overflow-hidden shadow-sm"
-                  whileHover={{ y: -10, borderColor: "rgba(122,154,199,0.3)" }}
-                >
-                  {/* Gradient overlay */}
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  />
-                  
-                  {/* Avatar */}
-                  <motion.div 
-                    className="relative w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary via-navy to-burgundy p-1"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                  >
-                    <div className="w-full h-full rounded-full bg-white dark:bg-dark-50 flex items-center justify-center overflow-hidden">
-                      <motion.span 
-                        className="text-5xl"
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                      >
-                        👤
-                      </motion.span>
-                    </div>
-                    
-                    {/* Online indicator */}
-                    <motion.div 
-                      className="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-green-500 border-2 border-white dark:border-dark-50"
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  </motion.div>
-                  
-                  <h3 className="relative z-10 text-xl font-bold text-navy dark:text-white mb-2">
-                    {locale === "ar" ? member.name : member.nameEn}
-                  </h3>
-                  <p className="relative z-10 text-primary font-medium mb-4">
-                    {locale === "ar" ? member.role : member.roleEn}
-                  </p>
-                  
-                  {/* Social links */}
-                  {member.social.linkedin && (
-                    <motion.a
-                      href={member.social.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-navy/10 dark:bg-white/10 text-navy/70 dark:text-silver hover:text-primary hover:bg-primary/20 transition-colors"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                    </motion.a>
-                  )}
-                  
-                  {/* Shine effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-                  />
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Team Section */}
+      <TeamSection
+        title={locale === "ar" ? "فريقنا المبدع" : "Our Creative Team"}
+        subtitle={locale === "ar" ? "فريق العمل" : "Our Team"}
+        description={locale === "ar" 
+          ? "نحن فريق من المحترفين الشغوفين بالتكنولوجيا والابتكار، نعمل معاً لتحويل أفكاركم إلى واقع رقمي متميز"
+          : "We are a team of professionals passionate about technology and innovation, working together to transform your ideas into outstanding digital reality"
+        }
+        locale={locale}
+        members={team.map(member => ({
+          name: locale === "ar" ? member.name : member.nameEn,
+          designation: locale === "ar" ? member.role : member.roleEn,
+          imageSrc: member.image,
+          socialLinks: member.social.linkedin ? [{ icon: Linkedin, href: member.social.linkedin }] : []
+        }))}
+      />
 
       {/* CTA Section */}
       <section className="relative py-28 px-4 sm:px-6 overflow-hidden">

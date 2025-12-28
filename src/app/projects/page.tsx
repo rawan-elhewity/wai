@@ -6,14 +6,16 @@ import { useLanguage } from "@/context";
 import { projects, ProjectCategory } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
 const stagger = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+};
+
+// Project colors based on category
+const categoryColors: Record<string, string> = {
+  web: "from-primary to-navy",
+  mobile: "from-cyan to-primary",
+  ai: "from-navy to-burgundy",
 };
 
 export default function ProjectsPage() {
@@ -88,56 +90,93 @@ export default function ProjectsPage() {
       <section className="px-4 sm:px-6 pb-20">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
             initial="hidden"
             animate="visible"
             variants={stagger}
           >
             <AnimatePresence mode="popLayout">
-              {filteredProjects.map((project) => (
+              {filteredProjects.map((project, i) => (
                 <motion.div
                   key={project.id}
                   layout
-                  variants={fadeInUp}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  className="group relative"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  whileHover={{ y: -5 }}
-                  className="group cursor-pointer"
-                  onClick={() => setSelectedProject(project.id)}
+                  transition={{ delay: i * 0.1 }}
                 >
-                  <div className="bg-white/50 dark:bg-dark-50/50 rounded-2xl overflow-hidden border border-silver/10 hover:border-primary/50 transition-all duration-300 hover:shadow-card-hover">
-                    {/* Image */}
-                    <div className="aspect-video bg-gradient-primary/20 relative flex items-center justify-center">
-                      <span className="text-6xl">
-                        {project.category === "web" && "🌐"}
-                        {project.category === "mobile" && "📱"}
-                        {project.category === "ai" && "🤖"}
-                      </span>
+                  <div className="relative h-full bg-white dark:bg-dark-50 rounded-2xl border border-gray-200 dark:border-white/10 shadow-lg shadow-gray-200/50 dark:shadow-none overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 dark:hover:shadow-cyan/10 hover:-translate-y-2">
+                    {/* Illustration Section */}
+                    <div className={`relative h-48 bg-gradient-to-br ${categoryColors[project.category] || "from-primary to-navy"} overflow-hidden`}>
+                      {/* Decorative elements */}
+                      <div className="absolute inset-0 opacity-30">
+                        <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-white/20 blur-xl" />
+                        <div className="absolute bottom-4 left-4 w-16 h-16 rounded-full bg-white/20 blur-xl" />
+                      </div>
+                      
+                      {/* Project Icon/Illustration */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <motion.div 
+                          className="w-24 h-24 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shadow-2xl"
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <span className="text-6xl">
+                            {project.category === "web" && "🌐"}
+                            {project.category === "mobile" && "📱"}
+                            {project.category === "ai" && "🤖"}
+                          </span>
+                        </motion.div>
+                      </div>
+
+                      {/* Category badge */}
+                      <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white text-xs font-semibold">
+                        {project.category === "web" ? "🌐 Web" : project.category === "mobile" ? "📱 Mobile" : "🤖 AI"}
+                      </div>
+
+                      {/* AI badge */}
                       {project.hasAI && (
-                        <span className="absolute top-4 right-4 px-3 py-1 bg-primary text-white text-xs rounded-full">
-                          AI
-                        </span>
+                        <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white text-xs font-semibold">
+                          AI ✨
+                        </div>
                       )}
                     </div>
-                    {/* Content */}
+
+                    {/* Content Section */}
                     <div className="p-6">
-                      <h3 className="text-lg font-semibold text-navy dark:text-white mb-2 group-hover:text-primary transition-colors">
+                      <h3 className="text-xl font-bold text-navy dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-cyan transition-colors">
                         {locale === "ar" ? project.title : project.titleEn}
                       </h3>
-                      <p className="text-navy/70 dark:text-silver text-sm mb-4">
+                      
+                      <p className="text-navy/60 dark:text-silver text-sm mb-4 line-clamp-2">
                         {locale === "ar" ? project.description : project.descriptionEn}
                       </p>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.slice(0, 3).map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-2 py-1 bg-primary/10 text-primary rounded text-xs"
+
+                      {/* Tech stack */}
+                      <div className="flex flex-wrap gap-2 mb-5">
+                        {project.technologies.slice(0, 3).map((tech, j) => (
+                          <span 
+                            key={j} 
+                            className="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-navy/70 dark:text-white/70 text-xs font-medium"
                           >
                             {tech}
                           </span>
                         ))}
+                        {project.technologies.length > 3 && (
+                          <span className="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-navy/70 dark:text-white/70 text-xs font-medium">
+                            +{project.technologies.length - 3}
+                          </span>
+                        )}
                       </div>
+
+                      {/* Action Button */}
+                      <button
+                        onClick={() => setSelectedProject(project.id)}
+                        className={`w-full py-3 rounded-xl bg-gradient-to-r ${categoryColors[project.category] || "from-primary to-navy"} text-white font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 active:scale-[0.98]`}
+                      >
+                        {locale === "ar" ? "عرض التفاصيل" : "View Details"}
+                      </button>
                     </div>
                   </div>
                 </motion.div>

@@ -17,9 +17,9 @@
   },
   "about": {
     "title": "About Us",
-    "subtitle": "We are a team of professionals passionate about technology",
+    "subtitle": "At WAI Soft we make a difference",
     "story": "Our Story",
-    "storyText": "WAI Soft started in 2010, when a team of passionate developers decided to create a company that provides innovative technical solutions. We are an Egyptian company that lives on the cutting-edge of technology focusing on quality and service. Over 15 years, we have delivered comprehensive digital solutions to more than 40 clients.",
+    "storyText": "At WAI Soft we make a difference. Professionals providing solutions based on technology, creativity, and innovation. We carry businesses from concept to market-ready brand. We are a company that lives on the cutting-edge of technology focusing on quality and service. We are a technical partner for enterprises and startups looking for a responsible firm to guide them through the business development process. Our team consists of professionals committed to excellence and skilled in crafting innovative solutions.",
     "meaning": "WAI Meaning",
     "meaningText": "W + AI = WAY - Your way to the digital future",
     "mission": "Our Mission",
@@ -27,8 +27,21 @@
     "vision": "Our Vision",
     "visionText": "To be the leading technology partner in the region",
     "values": "Our Values",
+    "valuesCustomerDriven": "Customer-driven",
+    "valuesCustomerDrivenDesc": "We prioritize client principles over profit, delivering value that customers expect.",
+    "valuesInnovation": "Innovation-oriented",
+    "valuesInnovationDesc": "We strongly believe in innovation – helping to create a better tomorrow.",
+    "valuesTechnology": "Technology-focused",
+    "valuesTechnologyDesc": "Focused on your long-term success, we explore and implement the latest in technological solutions.",
+    "approach": "Our Approach: Open-minded and Innovative",
+    "approachText": "In an effort to assist our team of professionals reach its full potential our business follows a non-hierarchical structure. We set aside outdated and restrictive bureau-heavy work flows, allowing creativity and experimentation drive our development process. We leave the stale thinking and predictable approaches to the other people, putting us – and your business solution – one step ahead. Always.",
+    "excellence": "Excellence in Execution",
+    "excellenceText": "Our team employs an agile methodology that allows us to react instantly to the slightest change when necessary. We are capable of reshaping any strategy to satisfy evolving project conditions. This capacity for agile development goes hand in hand with frequent and high-quality communication between our team of professionals and the customer. Clear visuals and timely internal reporting assure that our clients are informed on what work has been completed and what is ongoing.",
     "team": "Our Team",
-    "journey": "Our Journey"
+    "journey": "Our Journey",
+    "waiInNumbers": "WAI In Numbers",
+    "managedByWai": "Managed By WAI",
+    "managedByWaiText": "WAI Soft have many platforms serving Arab users all over the world. We operate some of the largest Arabic news platforms & women-oriented Facebook pages in the MENA region, among others."
   },
   "services": {
     "title": "Our Services",
@@ -70,7 +83,7 @@
     "success": "Thank you for contacting us!",
     "successText": "We will get back to you as soon as possible",
     "info": "Contact Information",
-    "address": "59 Zaki Shaban St, Shebin El-Kawm, Menofia, Egypt"
+    "address": "39 Sozan Mobarak St, Shebin Elkoom, MNF, EG"
   },
   "stats": {
     "projects": "Projects Completed",
@@ -136,5 +149,27 @@
     "badge": "Testimonials",
     "title": "What Our Clients Say",
     "subtitle": "We're proud of our clients' trust and testimonials"
+  },
+  "workProcess": {
+    "badge": "How We Work",
+    "title": "We Simplify Software Development Process",
+    "discover": "Discover",
+    "discoverDesc": "We shape brands through exploration, applying in-depth research to challenge assumptions at every turn.",
+    "design": "Design",
+    "designDesc": "Our design approach is to simplify. We embrace the joy in creating something unique that is easy for end users.",
+    "develop": "Develop",
+    "developDesc": "Using modern technologies, we develop with efficiency and skill, creating flexible and scalable business-driven solutions.",
+    "deliver": "Deliver",
+    "deliverDesc": "We take an iterative approach to both our work and our practice, always looking for ways to improve what we do."
+  },
+  "platforms": {
+    "badge": "Our Platforms",
+    "title": "Managed By WAI",
+    "subtitle": "Platforms serving millions of Arab users worldwide"
+  },
+  "trustedBy": {
+    "badge": "Our Clients",
+    "title": "Trusted By",
+    "subtitle": "The true worth of a company lies in the experiences of its clients. We've been churning out successful IT projects since 2010"
   }
 }

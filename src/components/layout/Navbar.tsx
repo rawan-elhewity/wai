@@ -39,8 +39,8 @@ export function Navbar() {
         className={cn(
           "w-[80%] transition-all duration-500 backdrop-blur-md",
           isScrolled 
-            ? "bg-white/10 dark:bg-dark/30 shadow-lg border border-white/10" 
-            : "bg-white/5 dark:bg-dark/10"
+            ? "bg-white/90 dark:bg-[#0A0A0F]/95 shadow-lg border border-gray-200/50 dark:border-white/10" 
+            : "bg-white/70 dark:bg-[#0A0A0F]/90 border border-gray-200/30 dark:border-white/5"
         )}
         style={{
           borderBottomLeftRadius: "20px",
@@ -107,7 +107,7 @@ export function Navbar() {
 
             {/* Theme Toggle */}
             <button
-              onClick={toggleTheme}
+              onClick={(e) => toggleTheme(e)}
               className="p-2 rounded-lg text-navy dark:text-silver hover:bg-primary/10 transition-colors"
               aria-label="Toggle theme"
             >

@@ -39,14 +39,14 @@ export function CountUp({ end, suffix = "", duration = 2, className }: CountUpPr
   // Animation effect
   const animate = useCallback(() => {
     if (!isVisible || hasAnimated) return;
-    
+
     setHasAnimated(true);
     const startTime = performance.now();
-    
+
     const step = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / (duration * 1000), 1);
-      
+
       // Easing function
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       setCount(Math.floor(easeOutQuart * end));
@@ -73,7 +73,8 @@ export function CountUp({ end, suffix = "", duration = 2, className }: CountUpPr
       animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
       transition={{ type: "spring", stiffness: 100, damping: 15 }}
     >
-      {count}{suffix}
+      {count}
+      {suffix}
     </motion.span>
   );
 }
