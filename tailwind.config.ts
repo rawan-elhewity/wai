@@ -127,8 +127,13 @@ const config: Config = {
         pulse: "pulse 2s ease-in-out infinite",
         "gradient-shift": "gradientShift 8s ease infinite",
         blob: "blob 10s ease-in-out infinite",
+        slide: "slide 10s linear infinite",
       },
       keyframes: {
+        slide: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
         fadeIn: {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },

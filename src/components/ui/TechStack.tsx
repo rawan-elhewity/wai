@@ -22,7 +22,6 @@ export function TechStack() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ delay: i * 0.1, type: "spring" }}
-          whileHover={{ scale: 1.1, borderColor: "rgba(122,154,199,0.5)" }}
         >
           <span className="text-xl">{tech.icon}</span>
           <span className="text-sm text-navy/70 dark:text-silver font-medium">{tech.name}</span>
@@ -34,7 +33,7 @@ export function TechStack() {
 
 export function FloatingTechIcons() {
   const icons = ["⚛️", "▲", "🐍", "🧠", "☁️", "📱", "🌐", "⚡"];
-  
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {icons.map((icon, i) => (

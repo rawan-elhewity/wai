@@ -10,6 +10,7 @@ import { useLanguage, useTheme } from "@/context";
 import { FloatingOrbs } from "@/components/ui/FloatingOrbs";
 import { CountUp } from "@/components/ui/CountUp";
 import { ServiceIcon, type ServiceType } from "@/components/ui/ServiceIcons";
+import AnimatedTextCycle from "@/components/ui/animated-text-cycle";
 
 // Lazy load heavy components
 const ParticleField = dynamic(
@@ -41,10 +42,10 @@ const ServiceCard = memo(function ServiceCard({ service, index }: { service: { i
       <div className="relative h-full p-6 sm:p-8 rounded-2xl bg-white dark:bg-white/5 backdrop-blur-sm border border-gray-200 dark:border-white/10 shadow-lg shadow-gray-200/50 dark:shadow-none overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 dark:hover:shadow-cyan/10 hover:-translate-y-2 hover:border-primary/40 dark:hover:border-cyan/30">
         {/* Gradient overlay on hover */}
         <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 dark:group-hover:opacity-10 transition-opacity duration-500`} />
-        
+
         {/* Decorative corner */}
         <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br ${service.gradient} opacity-20 dark:opacity-20 rounded-full blur-3xl group-hover:opacity-30 dark:group-hover:opacity-30 transition-opacity duration-500`} />
-        
+
         {/* Icon */}
         <div className="relative z-10 mb-6">
           <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.gradient} p-0.5 shadow-lg`}>
@@ -53,13 +54,13 @@ const ServiceCard = memo(function ServiceCard({ service, index }: { service: { i
             </div>
           </div>
         </div>
-        
+
         {/* Content */}
         <div className="relative z-10">
           <h3 className="text-xl font-bold text-navy dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-cyan transition-colors duration-300">{service.title}</h3>
           <p className="text-navy/70 dark:text-silver text-sm leading-relaxed">{service.desc}</p>
         </div>
-        
+
         {/* Arrow indicator */}
         <div className="relative z-10 mt-6 flex items-center text-primary/70 dark:text-white/40 group-hover:text-primary dark:group-hover:text-cyan transition-colors duration-300">
           <span className="text-sm font-medium">{service.title.includes("تطوير") || service.title.includes("Web") ? "اكتشف المزيد" : "Learn more"}</span>
@@ -75,8 +76,19 @@ const ServiceCard = memo(function ServiceCard({ service, index }: { service: { i
 export default function Home() {
   const { t, locale } = useLanguage();
   useTheme();
-  const heroRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
+  const splitSectionRef = useRef<HTMLDivElement>(null);
+
+  // Split reveal animation scroll progress
+  const { scrollYProgress: splitProgress } = useScroll({
+    target: splitSectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  // Transform values for split animation - parts move apart completely
+  const topHalfY = useTransform(splitProgress, [0, 0.5, 1], ["0%", "-100%", "-100%"]);
+  const bottomHalfY = useTransform(splitProgress, [0, 0.5, 1], ["0%", "100%", "100%"]);
+  const splitOpacity = useTransform(splitProgress, [0, 0.3, 0.5], [1, 0.5, 0]);
 
   // AI-like Typing animation state with loop
   const [displayedText, setDisplayedText] = useState("");
@@ -94,23 +106,23 @@ export default function Home() {
       }, 80); // Faster typing speed for AI effect
       return () => clearTimeout(timeout);
     }
-    
+
     // Cursor blinking for 5 seconds after typing
     if (currentIndex === sloganText.length && !isWaiting) {
       const cursorTimeout = setTimeout(() => {
         setShowCursor(true);
       }, 100);
-      
+
       const waitTimeout = setTimeout(() => {
         setIsWaiting(true);
       }, 5000); // Wait 5 seconds with cursor blinking
-      
+
       return () => {
         clearTimeout(cursorTimeout);
         clearTimeout(waitTimeout);
       };
     }
-    
+
     // Wait 5 more seconds then restart
     if (isWaiting) {
       const restartTimeout = setTimeout(() => {
@@ -119,7 +131,7 @@ export default function Home() {
         setIsWaiting(false);
         setShowCursor(true);
       }, 5000); // Wait another 5 seconds before restart
-      
+
       return () => clearTimeout(restartTimeout);
     }
   }, [currentIndex, sloganText, isWaiting]);
@@ -145,39 +157,38 @@ export default function Home() {
     { iconType: "web" as ServiceType, title: locale === "ar" ? "الاستشارات التقنية" : "Tech Consulting", desc: locale === "ar" ? "نقدم استشارات تقنية متخصصة لمساعدتك في اتخاذ القرارات الصحيحة" : "Expert technical consulting to help you make the right decisions", gradient: "from-rose-500 to-pink-500" },
   ], [t, locale]);
 
-  const stats = useMemo(() => [
-    { value: "15+", label: locale === "ar" ? "سنة خبرة" : "Years Experience", icon: "📅" },
-    { value: "50+", label: locale === "ar" ? "مشروع منجز" : "Projects", icon: "🎯" },
-    { value: "40+", label: locale === "ar" ? "عميل سعيد" : "Happy Clients", icon: "😊" },
-    { value: "10+", label: locale === "ar" ? "عضو فريق" : "Team Members", icon: "👥" },
-  ], [locale]);
+  const cyclingWords = useMemo(() => {
+    return locale === "ar"
+      ? ["التجارب الرقمية", "تطبيقات الموبايل", "المواقع الحديثة", "حلول الذكاء الاصطناعي", "الأنظمة السحابية", "هويتك البصرية"]
+      : ["Digital Experiences", "Mobile Applications", "Modern Websites", "AI Solutions", "Cloud Systems", "Brand Identity"];
+  }, [locale]);
 
   const featuredProjects = useMemo(() => [
-    { 
-      icon: "📰",  
-      title: locale === "ar" ? "RT Arab" : "RT Arab", 
+    {
+      icon: "📰",
+      title: locale === "ar" ? "RT Arab" : "RT Arab",
       description: locale === "ar" ? "منصة إخبارية عربية كبرى تخدم ملايين المستخدمين العرب حول العالم" : "Major Arabic news platform serving millions of Arab users worldwide",
-      category: "web", 
+      category: "web",
       tech: ["PHP", "MySQL", "WordPress", "CDN"],
       image: "/projects/rtarab.svg",
       color: "from-primary to-navy",
       link: "#"
     },
-    { 
-      icon: "📱", 
-      title: locale === "ar" ? "AS Screen Record" : "AS Screen Record", 
+    {
+      icon: "📱",
+      title: locale === "ar" ? "AS Screen Record" : "AS Screen Record",
       description: locale === "ar" ? "برنامج تسجيل شاشة احترافي سهل الاستخدام مع أكثر من 500 ألف تحميل" : "Professional and easy-to-use screen recording software with 500K+ downloads",
-      category: "mobile", 
+      category: "mobile",
       tech: ["Java", "Android SDK", "FFmpeg"],
       image: "/projects/as-screen-record.svg",
       color: "from-cyan to-primary",
       link: "#"
     },
-    { 
-      icon: "📚", 
-      title: locale === "ar" ? "بيت التعلم" : "Learning Home", 
+    {
+      icon: "📚",
+      title: locale === "ar" ? "بيت التعلم" : "Learning Home",
       description: locale === "ar" ? "منصة تعليمية إلكترونية متكاملة مع فصول افتراضية ونظام تقييم ذكي" : "Complete e-learning platform with virtual classrooms and smart assessment system",
-      category: "ai", 
+      category: "ai",
       tech: ["React", "Node.js", "MongoDB", "AI"],
       image: "/projects/learning-home.svg",
       color: "from-navy to-burgundy",
@@ -192,186 +203,256 @@ export default function Home() {
     <div className="min-h-screen">
       <ParticleField />
 
-      {/* Logo & Slogan Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-gray-50 via-white to-gray-100 dark:from-dark dark:via-dark-50 dark:to-dark-100">
-        <FloatingOrbs />
-        
-        {/* Animated background gradients */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 dark:bg-primary/30 rounded-full blur-[150px]"
-          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-cyan/15 dark:bg-cyan/20 rounded-full blur-[120px]"
-          animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 10, repeat: Infinity }}
-        />
+      {/* Split Reveal Section Container */}
+      <div ref={splitSectionRef} className="relative" style={{ height: "200vh" }}>
+        {/* Logo & Slogan Section - Split Animation */}
+        <div className="sticky top-0 h-screen overflow-hidden">
+          {/* Hero Section - Behind the split panels (z-10) */}
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-gradient-to-br from-white via-gray-50 to-white dark:from-dark-100 dark:via-navy/90 dark:to-dark-100">
+            {/* Background decorations */}
+            <div className="absolute inset-0">
+              {/* Gradient orbs */}
+              <div className="absolute top-20 right-20 w-72 h-72 bg-primary/20 dark:bg-primary/30 rounded-full blur-[100px]" />
+              <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyan/15 dark:bg-cyan/25 rounded-full blur-[120px]" />
 
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+              {/* Subtle grid */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
+            </div>
 
-        <div className="relative z-10 flex flex-col items-center justify-center px-4">
-          {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: -30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="mb-12 sm:mb-16"
-          >
-            <Image
-              src="/logo.png"
-              alt="WAI Soft"
-              width={600}
-              height={200}
-              className="w-auto h-auto max-w-[320px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-[650px] drop-shadow-2xl"
-              priority
-            />
-          </motion.div>
-
-          {/* Slogan with AI-like Typing Animation */}
-          <motion.div
-            className="text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            dir="ltr"
-          >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-navy dark:text-white tracking-wide min-h-[60px] sm:min-h-[80px] md:min-h-[100px] lg:min-h-[120px] flex items-center justify-center">
-              <span className="bg-gradient-to-r from-primary via-cyan to-navy dark:to-white bg-clip-text text-transparent drop-shadow-lg">
-                {displayedText}
-                {showCursor && (
-                  <motion.span
-                    className="inline-block w-0.5 sm:w-1 h-8 sm:h-10 md:h-12 lg:h-14 xl:h-16 bg-primary ml-1 align-middle"
-                    animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                  />
-                )}
-              </span>
-            </h2>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Hero Section - Modern Split Design */}
-      <section ref={heroRef} className="relative min-h-screen overflow-hidden bg-gradient-to-br from-white via-gray-50 to-white dark:from-dark-100 dark:via-navy/90 dark:to-dark-100">
-        {/* Background decorations */}
-        <div className="absolute inset-0">
-          {/* Gradient orbs */}
-          <div className="absolute top-20 right-20 w-72 h-72 bg-primary/20 dark:bg-primary/30 rounded-full blur-[100px]" />
-          <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyan/15 dark:bg-cyan/25 rounded-full blur-[120px]" />
-          
-          {/* Subtle grid */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.02)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        </div>
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
-          <div className="w-full py-16 lg:py-0">
-            {/* Main content */}
-            <div className="text-center max-w-4xl mx-auto">
-              {/* Badge */}
-              <motion.div
-                className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/80 dark:bg-white/10 backdrop-blur-sm border border-navy/10 dark:border-white/10 shadow-lg mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <span className="flex h-2.5 w-2.5 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan"></span>
-                </span>
-                <span className="text-sm font-medium text-navy/80 dark:text-white/80">{t.hero.subtitle}</span>
-              </motion.div>
-
-              {/* Title */}
-              <motion.h1
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-navy dark:text-white mb-6 leading-[1.1]"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                {t.hero.title}
-                <br />
-                <span className="bg-gradient-to-r from-primary via-cyan to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
-                  {t.hero.titleHighlight}
-                </span>
-              </motion.h1>
-
-              {/* Description */}
-              <motion.p
-                className="text-lg sm:text-xl text-navy/60 dark:text-silver max-w-2xl mx-auto mb-10 leading-relaxed"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                {t.hero.description}
-              </motion.p>
-
-              {/* CTA Buttons */}
-              <motion.div
-                className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <Button href="/contact" size="lg" className="group px-8 py-4 bg-gradient-to-r from-primary to-cyan hover:shadow-glow rounded-2xl text-base font-semibold">
-                  <span>{t.hero.cta}</span>
-                  <motion.span 
-                    className={`inline-block ${locale === "ar" ? "mr-2" : "ml-2"}`}
-                    animate={{ x: locale === "ar" ? [0, -5, 0] : [0, 5, 0] }}
-                    transition={{ duration: 1, repeat: Infinity }}
-                  >
-                    {locale === "ar" ? "←" : "→"}
-                  </motion.span>
-                </Button>
-                <Button href="/projects" variant="outline" size="lg" className="px-8 py-4 border-2 border-navy/20 dark:border-white/20 text-navy dark:text-white hover:bg-navy/5 dark:hover:bg-white/10 rounded-2xl text-base font-semibold">
-                  {t.hero.viewWork}
-                </Button>
-              </motion.div>
-
-              {/* Stats Row */}
-              <motion.div
-                className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                {stats.map((stat, i) => (
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="w-full py-16 lg:py-0">
+                {/* Main content */}
+                <div className="text-center max-w-4xl mx-auto px-4">
+                  {/* Badge */}
                   <motion.div
-                    key={i}
-                    className="relative group"
+                    className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/80 dark:bg-white/10 backdrop-blur-sm border border-navy/10 dark:border-white/10 shadow-lg mb-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5 + i * 0.1 }}
+                    transition={{ duration: 0.6 }}
                   >
-                    <div className="text-center p-6 rounded-2xl bg-white/60 dark:bg-white/5 backdrop-blur-sm border border-navy/5 dark:border-white/10 hover:border-primary/30 dark:hover:border-cyan/30 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                      <div className="text-3xl mb-2">{stat.icon}</div>
-                      <div className="text-3xl sm:text-4xl font-bold text-navy dark:text-white mb-1">{stat.value}</div>
-                      <p className="text-sm text-navy/50 dark:text-silver">{stat.label}</p>
-                    </div>
+                    <span className="flex h-2.5 w-2.5 relative">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan"></span>
+                    </span>
+                    <span className="text-sm font-medium text-navy/80 dark:text-white/80">{t.hero.subtitle}</span>
                   </motion.div>
-                ))}
-              </motion.div>
+
+                  {/* Title */}
+                  <motion.h1
+                    className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-navy dark:text-white mb-6 leading-[1.1]"
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                  >
+                    <span className="inline-block whitespace-nowrap">
+                      {t.hero.title}{" "}
+                      <AnimatedTextCycle
+                        words={cyclingWords}
+                        className="bg-gradient-to-r from-primary via-cyan to-primary bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient"
+                        interval={3500}
+                      />
+                    </span>
+                  </motion.h1>
+
+                  {/* Description */}
+                  <motion.p
+                    className="text-lg sm:text-xl text-navy/60 dark:text-silver max-w-2xl mx-auto mb-10 leading-relaxed"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                  >
+                    {t.hero.description}
+                  </motion.p>
+
+                  {/* CTA Buttons */}
+                  <motion.div
+                    className="flex flex-col sm:flex-row gap-4 justify-center"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                  >
+                    <Button href="/contact" size="lg" className="group px-8 py-4 bg-gradient-to-r from-primary to-navy hover:shadow-glow rounded-2xl text-base font-semibold border-none">
+                      <span>{t.hero.cta}</span>
+                      <motion.span
+                        className={`inline-block ${locale === "ar" ? "mr-2" : "ml-2"}`}
+                        animate={{ x: locale === "ar" ? [0, -5, 0] : [0, 5, 0] }}
+                        transition={{ duration: 1, repeat: Infinity }}
+                      >
+                        {locale === "ar" ? "←" : "→"}
+                      </motion.span>
+                    </Button>
+                    <Button href="/projects" variant="outline" size="lg" className="px-8 py-4 border-2 border-primary/30 dark:border-white/20 text-navy dark:text-silver hover:bg-primary/5 dark:hover:bg-white/10 rounded-2xl text-base font-semibold">
+                      {t.hero.viewWork}
+                    </Button>
+                  </motion.div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
+          {/* Top Half - Moves Up on Scroll (z-20, above hero) */}
           <motion.div
-            className="w-6 h-10 rounded-full border-2 border-navy/20 dark:border-white/20 flex justify-center pt-2"
-            animate={{ y: [0, 5, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            className="absolute inset-x-0 top-0 h-1/2 z-20 overflow-hidden"
+            style={{ y: topHalfY }}
           >
-            <motion.div className="w-1.5 h-1.5 rounded-full bg-navy/40 dark:bg-white/40" />
+            {/* Top background overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-white to-white dark:from-dark-50 dark:via-dark dark:to-dark" />
+
+            {/* Premium Background Elements - Top Half */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {/* Animated Mesh / Dots Pattern */}
+              <div className="absolute inset-0 bg-[radial-gradient(#8080801a_1.5px,transparent_1.5px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_100%,#000_70%,transparent_100%)] opacity-60" />
+
+              {/* Dynamic Connecting Lines (Abstract Tech Motif) */}
+              <svg className="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.05]">
+                <pattern id="grid-top" width="100" height="100" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1.5" fill="currentColor" />
+                  <path d="M 100 0 L 0 0 0 100" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#grid-top)" />
+              </svg>
+
+              {/* Rotating Tech Rings (Subtle) */}
+              <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[800px] h-[800px] border border-primary/5 rounded-full animate-[spin_60s_linear_infinite] opacity-30" />
+              <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] border border-cyan/5 rounded-full animate-[spin_40s_linear_infinite_reverse] opacity-20" />
+
+              {/* Moving Light Beam */}
+              <div className="absolute top-0 left-[-50%] w-[200%] h-[1px] bg-gradient-to-r from-transparent via-cyan/20 to-transparent animate-[slide_10s_linear_infinite]" />
+
+              {/* Animated Glowing Orbs */}
+              <div className="absolute -top-[15%] -right-[5%] w-[600px] h-[600px] rounded-full bg-primary/25 blur-[120px] animate-pulse" />
+              <div className="absolute top-[20%] -left-[10%] w-[500px] h-[500px] rounded-full bg-cyan/20 blur-[100px] animate-float-slow" />
+
+              {/* Floating Tech Dots */}
+              <div className="absolute top-[15%] left-[20%] w-1.5 h-1.5 rounded-full bg-primary/40 animate-ping" />
+              <div className="absolute top-[40%] right-[25%] w-1 h-1 rounded-full bg-cyan/60 animate-pulse" />
+            </div>
+
+            {/* Top half content - positioned at bottom of this half */}
+            <div className="absolute inset-0 flex items-end justify-center">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="relative mb-0"
+                style={{ opacity: splitOpacity }}
+              >
+                {/* Show top half of logo (WAI part) */}
+                <div className="overflow-hidden" style={{ height: "140px" }}>
+                  <Image
+                    src="/logo.png"
+                    alt="WAI Soft"
+                    width={600}
+                    height={280}
+                    className="w-auto max-w-[320px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-[650px] drop-shadow-2xl"
+                    priority
+                  />
+                </div>
+              </motion.div>
+            </div>
           </motion.div>
-        </motion.div>
-      </section>
+
+          {/* Bottom Half - Moves Down on Scroll (z-20, above hero) */}
+          <motion.div
+            className="absolute inset-x-0 bottom-0 h-1/2 z-20 overflow-hidden"
+            style={{ y: bottomHalfY }}
+          >
+            {/* Bottom background overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-gray-50 dark:from-dark dark:via-dark-50 dark:to-dark-100" />
+
+            {/* Premium Background Elements - Bottom Half */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {/* Animated Mesh / Dots Pattern */}
+              <div className="absolute inset-0 bg-[radial-gradient(#8080801a_1.5px,transparent_1.5px)] bg-[size:30px_30px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_70%,transparent_100%)] opacity-60" />
+
+              {/* Dynamic Connecting Lines */}
+              <svg className="absolute inset-0 w-full h-full opacity-[0.03] dark:opacity-[0.05]">
+                <pattern id="grid-bottom" width="100" height="100" patternUnits="userSpaceOnUse" patternTransform="rotate(180)">
+                  <circle cx="2" cy="2" r="1.5" fill="currentColor" />
+                  <path d="M 100 0 L 0 0 0 100" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#grid-bottom)" />
+              </svg>
+
+              {/* Rotating Tech Rings */}
+              <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[900px] h-[900px] border border-navy/5 dark:border-primary/5 rounded-full animate-[spin_50s_linear_infinite] opacity-30" />
+
+              {/* Animated Glowing Orbs */}
+              <div className="absolute bottom-[5%] -left-[5%] w-[600px] h-[600px] rounded-full bg-navy/15 dark:bg-primary/25 blur-[120px] animate-pulse" />
+              <div className="absolute -bottom-[10%] -right-[5%] w-[500px] h-[500px] rounded-full bg-cyan/20 blur-[100px] animate-float-slow" />
+
+              {/* Floating Tech Dots */}
+              <div className="absolute bottom-[15%] left-[25%] w-2 h-2 rounded-full bg-navy/40 dark:bg-white/20 animate-ping" />
+              <div className="absolute bottom-[30%] right-[15%] w-1.5 h-1.5 rounded-full bg-primary/40 animate-pulse" />
+            </div>
+
+            {/* Bottom half content - positioned at top of this half */}
+            <div className="absolute inset-0 flex flex-col items-center justify-start">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                className="relative mt-0"
+                style={{ opacity: splitOpacity }}
+              >
+                {/* Show bottom half of logo (SOFT part) */}
+                <div className="overflow-hidden" style={{ marginTop: "-140px", paddingTop: "140px" }}>
+                  <div style={{ marginTop: "-140px" }}>
+                    <Image
+                      src="/logo.png"
+                      alt="WAI Soft"
+                      width={600}
+                      height={280}
+                      className="w-auto max-w-[320px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-[650px] drop-shadow-2xl"
+                      priority
+                    />
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Slogan with AI-like Typing Animation */}
+              <motion.div
+                className="text-center mt-8"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.8 }}
+                dir="ltr"
+                style={{ opacity: splitOpacity }}
+              >
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-navy dark:text-white tracking-wide min-h-[60px] sm:min-h-[80px] md:min-h-[100px] lg:min-h-[120px] flex items-center justify-center">
+                  <span className="bg-gradient-to-r from-primary via-cyan to-navy dark:to-white bg-clip-text text-transparent drop-shadow-lg">
+                    {displayedText}
+                    {showCursor && (
+                      <motion.span
+                        className="inline-block w-0.5 sm:w-1 h-8 sm:h-10 md:h-12 lg:h-14 xl:h-16 bg-primary ml-1 align-middle"
+                        animate={{ opacity: [1, 0, 1] }}
+                        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+                      />
+                    )}
+                  </span>
+                </h2>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            style={{ opacity: splitOpacity }}
+          >
+            <motion.div
+              className="w-6 h-10 rounded-full border-2 border-navy/20 dark:border-white/20 flex justify-center pt-2 bg-white/50 dark:bg-dark/50 backdrop-blur-sm"
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <motion.div className="w-1.5 h-1.5 rounded-full bg-navy/40 dark:bg-white/40" />
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
 
       {/* About Section - Horizontal Scroll */}
       <section ref={aboutRef} className="relative" style={{ height: "300vh" }}>
@@ -383,10 +464,10 @@ export default function Home() {
             ))}
           </div>
 
-          <motion.div 
+          <motion.div
             className={`flex ${locale === "ar" ? "flex-row-reverse" : ""}`}
-            style={{ 
-              x: aboutX, 
+            style={{
+              x: aboutX,
               width: "300vw"
             }}
           >
@@ -411,7 +492,7 @@ export default function Home() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                     >
-                      <motion.span 
+                      <motion.span
                         className="w-2 h-2 rounded-full bg-primary"
                         animate={{ scale: [1, 1.5, 1], opacity: [1, 0.5, 1] }}
                         transition={{ duration: 2, repeat: Infinity }}
@@ -501,13 +582,11 @@ export default function Home() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.05 }}
-                      whileHover={{ y: -3, scale: 1.02 }}
                     >
                       <motion.div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
                       <div className="relative z-10 text-center">
-                        <motion.span 
+                        <motion.span
                           className="inline-flex w-14 h-14 rounded-xl bg-navy/10 dark:bg-white/10 items-center justify-center text-2xl mb-3"
-                          whileHover={{ scale: 1.2, rotate: 10 }}
                         >
                           {feature.icon}
                         </motion.span>
@@ -551,13 +630,10 @@ export default function Home() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.2 + i * 0.1 }}
-                      whileHover={{ scale: 1.05, y: -5 }}
                     >
                       <motion.div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
-                      <motion.div 
-                        className="relative z-10 text-4xl mb-4" 
-                        whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }} 
-                        transition={{ duration: 0.4 }}
+                      <motion.div
+                        className="relative z-10 text-4xl mb-4"
                       >
                         {stat.icon}
                       </motion.div>
@@ -577,7 +653,7 @@ export default function Home() {
       {/* Why Us Section - Simplified */}
       <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-navy to-burgundy opacity-90" />
-        
+
         <div className="relative z-10 max-w-6xl mx-auto">
           <motion.div className="text-center mb-20" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }}>
             <h2 className="text-3xl sm:text-5xl font-bold text-white mb-4">{t.whyUs?.title}</h2>
@@ -597,7 +673,6 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.02 }}
               >
                 <div className="text-6xl mb-6 inline-block">{item.icon}</div>
                 <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
@@ -615,18 +690,17 @@ export default function Home() {
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 dark:bg-primary/20 rounded-full blur-[120px]" />
           <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-cyan/10 dark:bg-cyan/20 rounded-full blur-[100px]" />
         </div>
-        
+
         <div className="relative z-10 max-w-7xl mx-auto">
           {/* Section Header */}
-          <motion.div 
+          <motion.div
             className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <motion.span 
+            <motion.span
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-white/10 backdrop-blur-sm text-primary dark:text-cyan text-sm font-medium mb-6 border border-primary/20 dark:border-cyan/20 shadow-sm"
-              whileHover={{ scale: 1.05 }}
             >
               <span className="w-2 h-2 rounded-full bg-primary dark:bg-cyan animate-pulse" />
               {t.services.badge}
@@ -673,13 +747,11 @@ export default function Home() {
                       <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-white/20 blur-xl" />
                       <div className="absolute bottom-4 left-4 w-16 h-16 rounded-full bg-white/20 blur-xl" />
                     </div>
-                    
+
                     {/* Project Icon/Illustration */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <motion.div 
+                      <motion.div
                         className="w-24 h-24 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shadow-2xl"
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ duration: 0.3 }}
                       >
                         <span className="text-6xl">{project.icon}</span>
                       </motion.div>
@@ -696,7 +768,7 @@ export default function Home() {
                     <h3 className="text-xl font-bold text-navy dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-cyan transition-colors">
                       {project.title}
                     </h3>
-                    
+
                     <p className="text-navy/60 dark:text-silver text-sm mb-4 line-clamp-2">
                       {project.description}
                     </p>
@@ -704,8 +776,8 @@ export default function Home() {
                     {/* Tech stack */}
                     <div className="flex flex-wrap gap-2 mb-5">
                       {project.tech.slice(0, 3).map((tech, j) => (
-                        <span 
-                          key={j} 
+                        <span
+                          key={j}
                           className="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-navy/70 dark:text-white/70 text-xs font-medium"
                         >
                           {tech}
@@ -731,7 +803,7 @@ export default function Home() {
             ))}
           </div>
 
-          <motion.div 
+          <motion.div
             className="text-center"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -749,10 +821,10 @@ export default function Home() {
           <div className="absolute top-1/4 left-0 w-72 h-72 bg-cyan-500/10 rounded-full blur-[100px]" />
           <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[120px]" />
         </div>
-        
+
         <div className="relative max-w-6xl mx-auto">
           <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <motion.span 
+            <motion.span
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-600 dark:text-cyan-400 text-sm font-medium mb-6 border border-cyan-500/30 backdrop-blur-sm"
             >
               <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
@@ -769,7 +841,7 @@ export default function Home() {
           {/* Tech Logos Grid - Infinite Scroll Style */}
           <div className="relative">
             {/* First Row */}
-            <motion.div 
+            <motion.div
               className="flex justify-center flex-wrap gap-4 sm:gap-6 mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -790,12 +862,11 @@ export default function Home() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
                 >
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${tech.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-                  <img 
-                    src={tech.logo} 
-                    alt={tech.name} 
+                  <img
+                    src={tech.logo}
+                    alt={tech.name}
                     className={`relative z-10 w-8 h-8 sm:w-10 sm:h-10 object-contain ${tech.darkInvert ? 'dark:invert' : ''}`}
                   />
                   <span className="relative z-10 font-medium text-navy dark:text-white text-sm sm:text-base">{tech.name}</span>
@@ -804,7 +875,7 @@ export default function Home() {
             </motion.div>
 
             {/* Second Row */}
-            <motion.div 
+            <motion.div
               className="flex justify-center flex-wrap gap-4 sm:gap-6 mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -826,7 +897,6 @@ export default function Home() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.1 + i * 0.05 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
                 >
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${tech.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                   <img src={tech.logo} alt={tech.name} className="relative z-10 w-8 h-8 sm:w-10 sm:h-10 object-contain" />
@@ -836,7 +906,7 @@ export default function Home() {
             </motion.div>
 
             {/* Third Row */}
-            <motion.div 
+            <motion.div
               className="flex justify-center flex-wrap gap-4 sm:gap-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -857,7 +927,6 @@ export default function Home() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.2 + i * 0.05 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
                 >
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${tech.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
                   <img src={tech.logo} alt={tech.name} className="relative z-10 w-8 h-8 sm:w-10 sm:h-10 object-contain" />
@@ -868,7 +937,7 @@ export default function Home() {
           </div>
 
           {/* Bottom Stats */}
-          <motion.div 
+          <motion.div
             className="mt-16 flex flex-wrap justify-center gap-8 sm:gap-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -893,7 +962,7 @@ export default function Home() {
       <section className="relative py-28 px-4 sm:px-6 overflow-hidden">
         <div className="relative max-w-6xl mx-auto">
           <motion.div className="text-center mb-16" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <motion.span 
+            <motion.span
               className="inline-block px-4 py-1.5 rounded-full bg-gradient-to-r from-primary/20 to-navy/20 text-primary text-sm font-medium mb-6 border border-primary/20"
             >
               🤝 {locale === "ar" ? "شركاؤنا" : "Partners"}
@@ -911,7 +980,7 @@ export default function Home() {
             {/* Gradient overlays */}
             <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white dark:from-dark-100 to-transparent z-10 pointer-events-none" />
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-dark-100 to-transparent z-10 pointer-events-none" />
-            
+
             <div className={`flex ${locale === "ar" ? "animate-marquee-rtl" : "animate-marquee"} group-hover:[animation-play-state:paused]`}>
               {[...Array(2)].map((_, setIndex) => (
                 <div key={setIndex} className="flex items-center shrink-0 pr-6">
@@ -939,7 +1008,7 @@ export default function Home() {
           </div>
 
           {/* Trust badges */}
-          <motion.div 
+          <motion.div
             className="flex flex-wrap justify-center gap-6 mt-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -969,7 +1038,7 @@ export default function Home() {
         >
           {/* Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-navy/90 via-dark-50 to-burgundy/50" />
-          
+
           {/* Static orbs for better performance */}
           <div className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 bg-primary/30 rounded-full blur-[100px] sm:blur-[120px]" />
           <div className="absolute bottom-0 left-0 w-56 sm:w-80 h-56 sm:h-80 bg-burgundy/30 rounded-full blur-[80px] sm:blur-[100px]" />
@@ -1001,11 +1070,11 @@ export default function Home() {
           exit={{ opacity: 0 }}
         >
           {/* Backdrop */}
-          <div 
+          <div
             className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={() => setSelectedProject(null)}
           />
-          
+
           {/* Modal Content */}
           <motion.div
             className="relative w-full max-w-lg bg-white dark:bg-dark-50 rounded-2xl shadow-2xl overflow-hidden"
@@ -1020,7 +1089,7 @@ export default function Home() {
                   <span className="text-5xl">{selectedProject.icon}</span>
                 </div>
               </div>
-              
+
               {/* Close button */}
               <button
                 onClick={() => setSelectedProject(null)}
@@ -1042,7 +1111,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold text-navy dark:text-white mb-3">
                 {selectedProject.title}
               </h3>
-              
+
               <p className="text-navy/70 dark:text-silver mb-6">
                 {selectedProject.description}
               </p>
@@ -1054,8 +1123,8 @@ export default function Home() {
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedProject.tech.map((tech, j) => (
-                    <span 
-                      key={j} 
+                    <span
+                      key={j}
                       className="px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-white/10 text-navy/70 dark:text-white/70 text-sm font-medium"
                     >
                       {tech}

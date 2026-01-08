@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 
 interface ButtonProps {
   variant?: "primary" | "secondary" | "outline" | "ghost";
-  size?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
   children: ReactNode;
   onClick?: () => void;
   href?: string;
@@ -43,6 +43,7 @@ const sizes = {
   sm: "px-4 py-2 text-sm rounded-full",
   md: "px-6 py-3 text-sm rounded-full",
   lg: "px-8 py-4 text-base rounded-full",
+  xl: "px-10 py-5 text-lg rounded-full",
 };
 
 export function Button({
@@ -68,7 +69,7 @@ export function Button({
 
   if (href) {
     return (
-      <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+      <motion.div whileTap={{ scale: 0.98 }}>
         <Link href={href} className={baseStyles}>
           {children}
         </Link>
@@ -82,7 +83,6 @@ export function Button({
       onClick={onClick}
       disabled={disabled}
       className={baseStyles}
-      whileHover={disabled ? undefined : { y: -2 }}
       whileTap={disabled ? undefined : { scale: 0.98 }}
     >
       {children}

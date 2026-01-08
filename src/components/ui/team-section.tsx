@@ -13,7 +13,8 @@ interface SocialLink {
 interface TeamMember {
   name: string;
   designation: string;
-  imageSrc: string;
+  image?: string;
+  icon?: React.ElementType;
   socialLinks?: SocialLink[];
 }
 
@@ -39,7 +40,7 @@ export const TeamSection = React.forwardRef<HTMLDivElement, TeamSectionProps>(
     ref
   ) => {
     const isRTL = locale === "ar";
-    
+
     // Colors for cards
     const cardColors = [
       "from-primary/20 to-cyan/20",
@@ -119,16 +120,34 @@ export const TeamSection = React.forwardRef<HTMLDivElement, TeamSectionProps>(
                   style={{ transitionDelay: `${index * 50}ms` }}
                 />
 
-                {/* Member Image */}
+                {/* Member Avatar / Icon */}
                 <div
-                  className="relative z-10 h-32 w-32 overflow-hidden rounded-full border-4 border-gray-100 dark:border-white/10 bg-gradient-to-br from-primary/30 to-cyan/30 transition-all duration-500 ease-out group-hover:border-primary dark:group-hover:border-cyan group-hover:scale-105"
+                  className={`relative z-10 h-32 w-32 overflow-hidden rounded-full border-4 border-gray-100 dark:border-white/10 bg-gradient-to-br ${[
+                      "from-primary to-cyan",
+                      "from-cyan to-navy",
+                      "from-navy to-primary",
+                      "from-emerald-500 to-teal-500",
+                      "from-violet-500 to-purple-500",
+                    ][index % 5]
+                    } transition-all duration-500 ease-out group-hover:border-primary dark:group-hover:border-cyan group-hover:scale-105 shadow-lg flex items-center justify-center`}
                   style={{ transitionDelay: `${index * 100}ms` }}
                 >
-                  <img
-                    src={`https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=7A9AC7&color=fff&size=200&bold=true`}
-                    alt={member.name}
-                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-                  />
+                  {member.image ? (
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : member.icon ? (
+                    <member.icon className="h-16 w-16 text-white drop-shadow-xl" />
+                  ) : (
+                    <span className="text-4xl font-bold text-white drop-shadow-lg select-none">
+                      {member.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                    </span>
+                  )}
+
+                  {/* Glass overlay */}
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 </div>
 
                 <h3 className="relative z-10 mt-4 text-xl font-semibold text-navy dark:text-white">

@@ -79,6 +79,24 @@ body {
   transition: background-color 0.4s ease 0.1s, color 0.4s ease 0.1s;
 }
 
+/* Light Mode Improvements - Better contrast */
+.light .text-silver {
+  color: #64707A;
+}
+
+.light .text-navy\/60 {
+  color: rgba(74, 85, 120, 0.75);
+}
+
+.light .text-navy\/70 {
+  color: rgba(74, 85, 120, 0.85);
+}
+
+/* Scrollbar for Light Mode */
+.light ::-webkit-scrollbar-track {
+  background: #F0F0F0;
+}
+
 /* Dark Mode */
 .dark {
   background-color: var(--bg-dark);

@@ -19,7 +19,7 @@ export const FloatingOrbs = memo(function FloatingOrbs() {
       <div
         className="absolute bottom-1/4 left-1/4 w-[300px] h-[300px] rounded-full animate-float-reverse will-change-transform"
         style={{
-          background: "radial-gradient(circle, rgba(45,26,36,0.25) 0%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(141, 228, 242, 0.2) 0%, transparent 70%)",
           filter: "blur(50px)",
         }}
       />

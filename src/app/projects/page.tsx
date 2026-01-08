@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/context";
 import { projects, ProjectCategory } from "@/data/projects";
 import { cn } from "@/lib/utils";
+import { PageHero } from "@/components/ui/PageHero";
 
 const stagger = {
   hidden: { opacity: 0 },
@@ -37,27 +38,15 @@ export default function ProjectsPage() {
   const selected = projects.find((p) => p.id === selectedProject);
 
   return (
-    <div className="min-h-screen pt-24">
+    <div className="min-h-screen">
       {/* Hero */}
-      <section className="py-20 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <motion.h1
-            className="text-4xl sm:text-5xl font-bold text-navy dark:text-white mb-6"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            {t.projects.title}
-          </motion.h1>
-          <motion.p
-            className="text-lg text-navy/70 dark:text-silver max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            {t.projects.subtitle}
-          </motion.p>
-        </div>
-      </section>
+      <PageHero
+        title={t.projects.title}
+        subtitle={t.projects.subtitle}
+        badge={locale === "ar" ? "أعمالنا المميزة" : "Our Featured Work"}
+        icon="🚀"
+        gradient="cyan"
+      />
 
       {/* Filters */}
       <section className="px-4 sm:px-6 mb-12">
@@ -114,12 +103,11 @@ export default function ProjectsPage() {
                         <div className="absolute top-4 right-4 w-20 h-20 rounded-full bg-white/20 blur-xl" />
                         <div className="absolute bottom-4 left-4 w-16 h-16 rounded-full bg-white/20 blur-xl" />
                       </div>
-                      
+
                       {/* Project Icon/Illustration */}
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <motion.div 
+                        <motion.div
                           className="w-24 h-24 rounded-2xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center shadow-2xl"
-                          whileHover={{ scale: 1.1, rotate: 5 }}
                           transition={{ duration: 0.3 }}
                         >
                           <span className="text-6xl">
@@ -148,7 +136,7 @@ export default function ProjectsPage() {
                       <h3 className="text-xl font-bold text-navy dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-cyan transition-colors">
                         {locale === "ar" ? project.title : project.titleEn}
                       </h3>
-                      
+
                       <p className="text-navy/60 dark:text-silver text-sm mb-4 line-clamp-2">
                         {locale === "ar" ? project.description : project.descriptionEn}
                       </p>
@@ -156,8 +144,8 @@ export default function ProjectsPage() {
                       {/* Tech stack */}
                       <div className="flex flex-wrap gap-2 mb-5">
                         {project.technologies.slice(0, 3).map((tech, j) => (
-                          <span 
-                            key={j} 
+                          <span
+                            key={j}
                             className="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-white/10 text-navy/70 dark:text-white/70 text-xs font-medium"
                           >
                             {tech}
@@ -200,7 +188,7 @@ export default function ProjectsPage() {
               className="absolute inset-0 bg-dark/80 backdrop-blur-sm"
               onClick={() => setSelectedProject(null)}
             />
-            
+
             {/* Modal */}
             <motion.div
               className="relative bg-white dark:bg-dark-50 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"

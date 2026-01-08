@@ -42,7 +42,6 @@ export function BentoItem({
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay }}
-      whileHover={{ y: -5 }}
     >
       {/* Shine effect */}
       <motion.div
